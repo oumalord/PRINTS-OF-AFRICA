@@ -2,9 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
 const pool = require('./db');
 
 const app = express();
@@ -17,9 +14,6 @@ app.use(cors({
 
 // --- Image uploads -------------------------------------------------------
 
-const uploadsDir = path.join(__dirname, 'uploads');
-fs.mkdirSync(uploadsDir, { recursive: true });
-
 const ALLOWED_IMAGE_MIME_TYPES = {
     'image/jpeg': '.jpg',
     'image/png': '.png',
@@ -28,11 +22,7 @@ const ALLOWED_IMAGE_MIME_TYPES = {
 };
 
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => cb(null, uploadsDir),
-        // Random filename avoids path traversal / collisions from user-supplied names.
-        filename: (req, file, cb) => cb(null, `${crypto.randomUUID()}${ALLOWED_IMAGE_MIME_TYPES[file.mimetype]}`)
-    }),
+    storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (!ALLOWED_IMAGE_MIME_TYPES[file.mimetype]) return cb(new Error('Unsupported file type'));
@@ -40,14 +30,36 @@ const upload = multer({
     }
 });
 
-app.use('/uploads', express.static(uploadsDir));
-
 app.post('/api/upload', (req, res) => {
     upload.array('images', 8)(req, res, (err) => {
         if (err) return res.status(400).json({ error: err.message });
         if (!req.files || !req.files.length) return res.status(400).json({ error: 'No files uploaded' });
-        res.status(201).json({ urls: req.files.map(file => `/uploads/${file.filename}`) });
+        Promise.all(req.files.map(file => pool.query(
+            'INSERT INTO uploaded_images (mime_type, data) VALUES ($1, $2) RETURNING id',
+            [file.mimetype, file.buffer]
+        )))
+            .then(results => res.status(201).json({ urls: results.map(({ rows }) => `/api/uploads/${rows[0].id}`) }))
+            .catch(error => {
+                console.error(error);
+                res.status(500).json({ error: 'Failed to store images in Neon' });
+            });
     });
+});
+
+app.get('/api/uploads/:id', async (req, res) => {
+    try {
+        const { rows } = await pool.query(
+            'SELECT mime_type, data FROM uploaded_images WHERE id = $1',
+            [req.params.id]
+        );
+        if (!rows.length) return res.status(404).json({ error: 'Image not found' });
+        res.set('Content-Type', rows[0].mime_type);
+        res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        res.send(rows[0].data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to load image' });
+    }
 });
 
 function rowToProduct(row) {
@@ -176,4 +188,11 @@ app.put('/api/orders/:id/status', async (req, res) => {
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Prints of Africa API listening on port ${PORT}`));
+
+// Vercel imports the Express app as a serverless function; local development
+// still starts the regular HTTP server through `npm start`.
+if (require.main === module) {
+    app.listen(PORT, () => console.log(`Prints of Africa API listening on port ${PORT}`));
+}
+
+module.exports = app;

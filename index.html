@@ -89,6 +89,102 @@
             outline: none;
         }
         .admin-field:focus { border-color: #D4AF37; }
+
+        @media (max-width: 639px) {
+            html { overflow-x: hidden; }
+            body { min-width: 320px; overflow-x: hidden; }
+
+            header .max-w-7xl > .flex {
+                min-height: 4.25rem;
+                gap: .35rem;
+            }
+            #mobile-menu-btn { padding: .65rem .5rem; flex: 0 0 auto; }
+            header a.group { min-width: 0; gap: .5rem; }
+            header a.group > div:first-child { width: 2.5rem; height: 2.5rem; flex: 0 0 auto; }
+            header a.group > div:last-child { min-width: 0; }
+            header a.group span:first-child {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 1rem;
+                letter-spacing: .08em;
+            }
+            header a.group span:last-child { font-size: 7px; letter-spacing: .12em; }
+            header .flex.items-center.space-x-4 { gap: .35rem; margin-left: auto; }
+            header .flex.items-center.space-x-4 > button { padding: .55rem .35rem; }
+            header .flex.items-center.space-x-4 > button i { font-size: .95rem; }
+            #cart-drawer-btn { padding: .55rem .65rem; }
+            #cart-drawer-btn #cart-count { width: 1.25rem; height: 1.25rem; }
+
+            .marquee-track { animation-duration: 34s; }
+            header .text-xs.py-2 { font-size: 10px; }
+
+            #home { min-height: auto; }
+            #home > .relative.z-10 { padding-top: 4rem; padding-bottom: 3.5rem; }
+            #home h1 { font-size: 2.65rem; line-height: 1.05; letter-spacing: .01em; }
+            #home h1 br { display: none; }
+            #home .inline-flex { max-width: 100%; font-size: 10px; line-height: 1.45; text-align: left; }
+            #home .grid { gap: .5rem; }
+            #home .grid > div { padding: .7rem .45rem; border-radius: .9rem; }
+            #home .grid p:first-of-type { font-size: 10px; line-height: 1.2; }
+            #home .grid p:last-of-type { font-size: 9px; line-height: 1.2; }
+
+            #collections, #store-locator { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+            #collections h2, #reviews h2, #store-locator h2 { font-size: 2.25rem; line-height: 1.05; }
+            #collections .mb-10 { margin-bottom: 1.5rem; }
+            #collections .overflow-x-auto { justify-content: flex-start; margin-inline: -1rem; padding-inline: 1rem; }
+            #collections .category-btn { padding: .65rem .85rem; font-size: 10px; }
+            #products-grid { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+            #products-grid > div { border-radius: 1rem; }
+            #products-grid > div > div:last-child { padding: .8rem; gap: .5rem; }
+            #products-grid h3 { font-size: .95rem; line-height: 1.1; }
+            #products-grid h3 + span { font-size: .7rem; }
+            #products-grid .text-xs.line-clamp-2 { font-size: 10px; line-height: 1.35; }
+            #products-grid button { padding-block: .65rem; font-size: 9px; letter-spacing: .05em; }
+            #products-grid .absolute.top-4 { top: .6rem; }
+            #products-grid .absolute.left-4 { left: .6rem; }
+            #products-grid .absolute.right-4 { right: .6rem; }
+            #products-grid .absolute.top-4 button { width: 2rem; height: 2rem; }
+            #products-grid .absolute.bottom-4 { display: none; }
+
+            #reviews { padding-block: 3.5rem; }
+            #reviews .mb-16 { margin-bottom: 2rem; }
+            #reviews .grid { gap: .75rem; }
+            #reviews .grid > div { padding: 1rem; border-radius: 1rem; }
+            #store-locator .flex.flex-wrap { gap: .65rem; }
+            #store-locator .flex.flex-wrap a { flex: 1 1 100%; justify-content: center; }
+            #store-locator > div > div:last-child { padding: .75rem; border-radius: 1rem; }
+            #store-locator > div > div:last-child > div { aspect-ratio: 1 / 1.05; padding: 1rem; }
+
+            footer { padding-top: 3rem; }
+            footer .grid { gap: 2rem; }
+            footer .flex.items-center.justify-between { align-items: flex-start; }
+
+            [id$="-modal"] > div, #admin-modal > div { max-height: calc(100dvh - 1rem); border-radius: 1rem; }
+            #size-guide-modal, #quick-view-modal { padding: .5rem; }
+            #size-guide-modal > div, #quick-view-modal > div { padding: 1rem; }
+            #size-guide-modal .flex.border-b { overflow-x: auto; }
+            #size-guide-modal .flex.border-b button { min-width: max-content; padding-inline: .9rem; }
+            #quick-view-content { gap: 1.25rem; }
+            #quick-view-content h3 { font-size: 1.8rem; line-height: 1.05; }
+            #cart-drawer { width: 100%; }
+            #cart-drawer > div { padding: 1rem; }
+            #search-modal { padding-top: 5rem; }
+            #search-modal > button { top: 1rem; right: 1rem; }
+            #toast-notification { left: 1rem; right: 1rem; bottom: 1rem; justify-content: center; text-align: center; }
+
+            #admin-modal { padding: .5rem; }
+            #admin-modal h2 { font-size: 1.7rem; line-height: 1.1; }
+            #admin-modal .grid.grid-cols-2 { gap: .5rem; }
+            #admin-modal .p-5, #admin-modal .p-7 { padding: 1rem; }
+            #admin-dashboard { overflow-x: hidden; }
+            #admin-products-table, #admin-orders-table { margin-inline: -.25rem; }
+        }
+
+        @media (min-width: 640px) and (max-width: 1023px) {
+            #products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
     </style>
 </head>
 <body class="bg-brand-dark text-stone-200 font-sans antialiased selection:bg-brand-rose selection:text-white">

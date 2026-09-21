@@ -2,6 +2,8 @@
 -- In the Neon console: open the SQL editor for your project and paste this in,
 -- or run: psql "$DATABASE_URL" -f schema.sql
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE IF NOT EXISTS products (
     id           TEXT PRIMARY KEY,
     name         TEXT NOT NULL,
@@ -21,6 +23,13 @@ CREATE TABLE IF NOT EXISTS products (
 
 -- Run this if the table already existed before the "images" gallery column was added.
 ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB NOT NULL DEFAULT '[]';
+
+CREATE TABLE IF NOT EXISTS uploaded_images (
+    id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    mime_type  TEXT NOT NULL,
+    data       BYTEA NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
 CREATE TABLE IF NOT EXISTS orders (
     id                 TEXT PRIMARY KEY,
