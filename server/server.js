@@ -15,7 +15,13 @@ app.use(cors({
 
 const projectRoot = path.join(__dirname, '..');
 app.use('/assets', express.static(path.join(projectRoot, 'assets')));
-app.get('/', (req, res) => res.sendFile(path.join(projectRoot, 'index.html')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(projectRoot, 'index.html'), error => {
+        if (error && !res.headersSent) {
+            res.status(200).send('API is running successfully');
+        }
+    });
+});
 
 // --- Image uploads -------------------------------------------------------
 
