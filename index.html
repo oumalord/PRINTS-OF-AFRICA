@@ -48,7 +48,7 @@
         .hero-bg-layer {
             position: absolute;
             inset: 0;
-            background-position: center;
+            background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
             background-color: #2b211c;
@@ -1737,7 +1737,6 @@
 
         window.onload = async function() {
             await loadFromApi();
-            startHeroBackgroundRotation();
             renderProducts();
             updateCartUI();
             document.getElementById('wishlist-count').innerText = wishlist.length;

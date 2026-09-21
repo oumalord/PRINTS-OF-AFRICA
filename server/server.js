@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const path = require('path');
 const pool = require('./db');
 
 const app = express();
@@ -11,6 +12,10 @@ app.use(express.json());
 app.use(cors({
     origin: allowedOrigins.length ? allowedOrigins : true,
 }));
+
+const projectRoot = path.join(__dirname, '..');
+app.use('/assets', express.static(path.join(projectRoot, 'assets')));
+app.get('/', (req, res) => res.sendFile(path.join(projectRoot, 'index.html')));
 
 // --- Image uploads -------------------------------------------------------
 
