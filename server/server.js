@@ -92,6 +92,27 @@ function rowToOrder(row) {
     };
 }
 
+function uploadedImageIds(images = []) {
+    return images
+        .map(image => String(image).match(/\/api\/uploads\/([0-9a-f-]{36})/i)?.[1])
+        .filter(Boolean);
+}
+
+async function removeUnusedUploadedImages(imageUrls) {
+    const ids = uploadedImageIds(imageUrls);
+    if (!ids.length) return;
+    await pool.query(
+        `DELETE FROM uploaded_images image
+         WHERE image.id = ANY($1::uuid[])
+           AND NOT EXISTS (
+               SELECT 1 FROM products product
+               WHERE product.image = '/api/uploads/' || image.id::text
+                  OR product.images::text LIKE '%' || image.id::text || '%'
+           )`,
+        [ids]
+    );
+}
+
 // --- Products ---------------------------------------------------------
 
 app.get('/api/products', async (req, res) => {
@@ -110,6 +131,18 @@ app.post('/api/products', async (req, res) => {
         return res.status(400).json({ error: 'Missing required product fields' });
     }
     try {
+        const previous = await pool.query('SELECT image, images FROM products WHERE id = $1', [id]);
+        const nextImages = images && images.length ? images : [image];
+        if (Number(stock ?? 0) <= 0 && previous.rows.length) {
+            await pool.query('DELETE FROM products WHERE id = $1', [id]);
+            await removeUnusedUploadedImages([
+                previous.rows[0].image,
+                ...(previous.rows[0].images || []),
+                image,
+                ...nextImages
+            ]);
+            return res.status(204).end();
+        }
         const { rows } = await pool.query(
             `INSERT INTO products (id, name, category, price, color, swatches, sizes, image, images, description, tag, stock)
              VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
@@ -119,8 +152,14 @@ app.post('/api/products', async (req, res) => {
                 image = EXCLUDED.image, images = EXCLUDED.images, description = EXCLUDED.description, tag = EXCLUDED.tag,
                 stock = EXCLUDED.stock, updated_at = now()
              RETURNING *`,
-            [id, name, category, price, color, JSON.stringify(swatches || []), JSON.stringify(sizes || []), image, JSON.stringify(images && images.length ? images : [image]), description, tag || 'New Arrival', stock ?? 0]
+            [id, name, category, price, color, JSON.stringify(swatches || []), JSON.stringify(sizes || []), image, JSON.stringify(nextImages), description, tag || 'New Arrival', stock ?? 0]
         );
+        if (previous.rows.length) {
+            await removeUnusedUploadedImages([
+                previous.rows[0].image,
+                ...(previous.rows[0].images || [])
+            ]);
+        }
         res.status(201).json(rowToProduct(rows[0]));
     } catch (err) {
         console.error(err);
@@ -130,7 +169,14 @@ app.post('/api/products', async (req, res) => {
 
 app.delete('/api/products/:id', async (req, res) => {
     try {
+        const previous = await pool.query('SELECT image, images FROM products WHERE id = $1', [req.params.id]);
         await pool.query('DELETE FROM products WHERE id = $1', [req.params.id]);
+        if (previous.rows.length) {
+            await removeUnusedUploadedImages([
+                previous.rows[0].image,
+                ...(previous.rows[0].images || [])
+            ]);
+        }
         res.status(204).end();
     } catch (err) {
         console.error(err);
