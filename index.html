@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prints of Africa (PA) | Modest & Elegant Ready-To-Wear Fashion</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37',
+                            rose: '#C58B70',
+                            rosegold: '#B87333',
+                            dark: '#141414',
+                            charcoal: '#1E1E1E',
+                            cream: '#FAF7F2',
+                            sand: '#EFEAE1',
+                            emerald: '#004D40',
+                            terracotta: '#C85A32',
+                            purple: '#4A154B'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(20, 20, 20, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-bg-layer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 45%, rgba(20, 20, 20, 0.55) 100%),
+                        center/cover no-repeat;
+            opacity: 0;
+            transition: opacity 1.8s ease-in-out;
+        }
+        .hero-bg-layer.active { opacity: 1; }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 24s linear infinite;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C58B70;
+        }
+        .admin-field {
+            width: 100%;
+            background: #1c1c1c;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: .75rem;
+            padding: .7rem 1rem;
+            color: white;
+            font-size: .8rem;
+            outline: none;
+        }
+        .admin-field:focus { border-color: #D4AF37; }
+    </style>
+</head>
+<body class="bg-brand-dark text-stone-200 font-sans antialiased selection:bg-brand-rose selection:text-white">
+
+    <header class="sticky top-0 z-40 glass-nav border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Mobile menu trigger -->
+                <button id="mobile-menu-btn" class="lg:hidden text-stone-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-full border-2 border-brand-rose flex items-center justify-center bg-black/50 group-hover:border-brand-gold transition-colors shadow-lg">
+                        <span class="font-serif font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-rose to-brand-gold">PA</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-serif text-xl sm:text-2xl font-bold tracking-widest text-white uppercase group-hover:text-brand-rose transition-colors">Prints of Africa</span>
+                        <span class="text-[9px] tracking-[0.22em] text-brand-gold font-semibold uppercase -mt-1">Wear Your Heritage</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-8 text-xs uppercase tracking-widest font-semibold">
+                    <a href="#home" class="text-brand-gold hover:text-brand-rose transition-colors py-1 border-b border-brand-gold">Home</a>
+                    <a href="#collections" class="text-stone-300 hover:text-white transition-colors py-1">Collections</a>
+                    <button onclick="toggleSizeGuideModal(true)" class="text-stone-300 hover:text-brand-gold transition-colors py-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-ruler-horizontal text-xs text-brand-rose"></i> Size Guide
+                    </button>
+                    <a href="#reviews" class="text-stone-300 hover:text-white transition-colors py-1">Reviews</a>
+                    <a href="#store-locator" class="text-stone-300 hover:text-white transition-colors py-1">Visit Store</a>
+                    <a href="#contact" class="text-stone-300 hover:text-white transition-colors py-1">Contact</a>
+                </nav>
+
+                <!-- Action Bar Icons -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleSearchModal(true)" class="text-stone-300 hover:text-brand-gold transition-colors p-1" title="Search Catalog">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+
+                    <button onclick="openWishlistModal()" class="text-stone-300 hover:text-brand-rose transition-colors p-1 relative" title="Wishlist">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span id="wishlist-count" class="absolute -top-1 -right-1 bg-brand-rose text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+
+                    <!-- Shopping Cart Trigger -->
+                    <button id="cart-drawer-btn" onclick="toggleCartDrawer(true)" class="bg-gradient-to-r from-brand-rose to-brand-rosegold text-white px-4 py-2 rounded-full flex items-center gap-2 hover:opacity-95 transition-all shadow-md">
+                        <i class="fa-solid fa-bag-shopping text-sm"></i>
+                        <span class="text-xs font-bold tracking-wider uppercase hidden sm:inline">Bag</span>
+                        <span id="cart-count" class="bg-white text-black font-extrabold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scrolling info ticker, sits directly beneath the logo/nav row -->
+        <div class="bg-gradient-to-r from-brand-charcoal via-stone-900 to-brand-charcoal border-t border-white/10 text-xs py-2 overflow-hidden">
+            <div class="marquee-track">
+                <div class="flex items-center gap-10 pr-10 text-stone-300 whitespace-nowrap">
+                    <span><i class="fa-solid fa-location-dot me-1.5 text-brand-gold"></i> RNG Plaza, 2nd Floor Shop, Nairobi</span>
+                    <span><i class="fa-solid fa-phone me-1.5 text-brand-gold"></i> 0715981916</span>
+                    <span>✨ <span class="text-brand-gold font-semibold">Wear Your Heritage</span> &mdash; Express Delivery Nationwide Across Kenya</span>
+                    <span class="text-stone-400">Currency: <strong class="text-stone-200">KES (KSh)</strong></span>
+                </div>
+                <div class="flex items-center gap-10 pr-10 text-stone-300 whitespace-nowrap" aria-hidden="true">
+                    <span><i class="fa-solid fa-location-dot me-1.5 text-brand-gold"></i> RNG Plaza, 2nd Floor Shop, Nairobi</span>
+                    <span><i class="fa-solid fa-phone me-1.5 text-brand-gold"></i> 0715981916</span>
+                    <span>✨ <span class="text-brand-gold font-semibold">Wear Your Heritage</span> &mdash; Express Delivery Nationwide Across Kenya</span>
+                    <span class="text-stone-400">Currency: <strong class="text-stone-200">KES (KSh)</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-charcoal border-b border-white/10 px-6 py-6 space-y-4">
+            <a href="#home" onclick="closeMobileMenu()" class="block text-brand-gold font-medium tracking-wider">HOME</a>
+            <a href="#collections" onclick="closeMobileMenu()" class="block text-stone-200 hover:text-brand-gold font-medium tracking-wider">COLLECTIONS</a>
+            <button onclick="closeMobileMenu(); toggleSizeGuideModal(true);" class="block text-left w-full text-stone-200 hover:text-brand-gold font-medium tracking-wider">SIZE GUIDE & FIT CALCULATOR</button>
+            <a href="#reviews" onclick="closeMobileMenu()" class="block text-stone-200 hover:text-brand-gold font-medium tracking-wider">REVIEWS & FEEDBACK</a>
+            <a href="#store-locator" onclick="closeMobileMenu()" class="block text-stone-200 hover:text-brand-gold font-medium tracking-wider">VISIT STORE (NAIROBI)</a>
+            <a href="#contact" onclick="closeMobileMenu()" class="block text-stone-200 hover:text-brand-gold font-medium tracking-wider">CONTACT US</a>
+        </div>
+    </header>
+
+    <section id="home" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/10 px-4 sm:px-6 lg:px-8">
+        <div id="hero-bg-layers" class="absolute inset-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/70 via-transparent to-transparent"></div>
+        
+        <div class="relative z-10 max-w-5xl mx-auto text-center space-y-6 py-16">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-900/90 border border-brand-rose/40 text-brand-gold text-xs sm:text-sm font-medium tracking-wider uppercase backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> RNG Plaza, 2nd Floor, Nairobi Boutique Open Today
+            </div>
+            
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wide text-white leading-tight">
+                Modest Elegance.<br/>
+                <span class="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-brand-rose via-brand-gold to-stone-200">Wear Your Heritage.</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-stone-300 text-base sm:text-lg font-light leading-relaxed">
+                Ready-to-wear tailored statement outfits made for the modest and elegant woman. Designed with timeless African sophistication in Nairobi.
+            </p>
+            
+            <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#collections" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-brand-rose to-brand-rosegold text-white font-semibold text-xs sm:text-sm uppercase tracking-widest hover:shadow-lg hover:shadow-brand-rose/20 transition-all transform hover:-translate-y-0.5 text-center">
+                    Explore Collections <i class="fa-solid fa-arrow-right ms-2 text-xs"></i>
+                </a>
+                <a href="#store-locator" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-stone-100 hover:bg-white/20 font-semibold text-xs sm:text-sm uppercase tracking-widest transition-all text-center">
+                    Visit Our Store
+                </a>
+            </div>
+
+            <!-- Value Propositions -->
+            <div class="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-center max-w-4xl mx-auto text-xs text-stone-300">
+                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-sm">
+                    <i class="fa-solid fa-scissors text-brand-gold text-lg mb-1"></i>
+                    <p class="font-bold text-white">Tailored Precision</p>
+                    <p class="text-[11px] text-stone-400">Flattering Modest Cuts</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-sm">
+                    <i class="fa-solid fa-truck-fast text-brand-gold text-lg mb-1"></i>
+                    <p class="font-bold text-white">Nationwide Express</p>
+                    <p class="text-[11px] text-stone-400">Same-Day Nairobi Pickups</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-sm">
+                    <i class="fa-solid fa-gem text-brand-gold text-lg mb-1"></i>
+                    <p class="font-bold text-white">Luxury Fabrics</p>
+                    <p class="text-[11px] text-stone-400">Rich Silks & Print Mixes</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-black/50 border border-white/10 backdrop-blur-sm">
+                    <i class="fa-solid fa-tape text-brand-gold text-lg mb-1"></i>
+                    <p class="font-bold text-white">Inclusive Sizing</p>
+                    <p class="text-[11px] text-stone-400">UK Sizes 6 to 24</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-gradient-to-r from-brand-charcoal via-stone-900 to-brand-charcoal py-8 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4 text-center md:text-left">
+                <div class="w-12 h-12 rounded-full bg-brand-rose/20 border border-brand-rose flex items-center justify-center shrink-0 mx-auto md:mx-0">
+                    <i class="fa-solid fa-ruler text-brand-gold text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-xl font-bold text-white">Unsure of Your Perfect Fit?</h3>
+                    <p class="text-stone-400 text-xs sm:text-sm">Explore our standard size chart (UK Sizes 6 – 24) or calculate your fit instantly.</p>
+                </div>
+            </div>
+            <button onclick="toggleSizeGuideModal(true)" class="px-6 py-3 rounded-full bg-stone-800 border border-brand-gold/50 text-brand-gold hover:bg-brand-gold hover:text-black font-semibold text-xs uppercase tracking-widest transition-all shrink-0">
+                Open Size Calculator
+            </button>
+        </div>
+    </section>
+
+    <section id="collections" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <span class="text-brand-rose text-xs font-bold uppercase tracking-[0.25em]">Ready To Wear Outfits</span>
+            <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">The PA Heritage Collection</h2>
+            <div class="w-16 h-0.5 bg-brand-gold mx-auto my-3"></div>
+            <p class="text-stone-400 text-sm sm:text-base">Designed for comfort, flowing grace, and unmistakable elegance.</p>
+        </div>
+
+        <!-- Filter Category Tabs -->
+        <div class="flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto pb-4 mb-10 no-scrollbar text-xs sm:text-sm">
+            <button onclick="filterCategory('all', this)" class="category-btn active px-5 py-2.5 rounded-full bg-brand-rose text-white font-medium whitespace-nowrap transition-all shadow-md">All Outfits</button>
+            <button onclick="filterCategory('kaftans', this)" class="category-btn px-5 py-2.5 rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:border-brand-rose font-medium whitespace-nowrap transition-all">Flowing Kaftans & Abayas</button>
+            <button onclick="filterCategory('tops', this)" class="category-btn px-5 py-2.5 rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:border-brand-rose font-medium whitespace-nowrap transition-all">Asymmetric Tops & Tunics</button>
+            <button onclick="filterCategory('coords', this)" class="category-btn px-5 py-2.5 rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:border-brand-rose font-medium whitespace-nowrap transition-all">Co-ord Sets & Suits</button>
+            <button onclick="filterCategory('prints', this)" class="category-btn px-5 py-2.5 rounded-full bg-stone-900 border border-white/10 text-stone-300 hover:border-brand-rose font-medium whitespace-nowrap transition-all">African Print Statements</button>
+        </div>
+
+        <!-- Dynamic Product Cards Grid -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Rendered dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <section id="reviews" class="py-20 bg-stone-900/60 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <span class="text-brand-gold text-xs font-bold uppercase tracking-[0.25em]">Verified Client Receipts</span>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">What Our Queens Say</h2>
+                <p class="text-stone-400 text-sm">Real reviews and outfit love from customers across Kenya & East Africa.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-brand-charcoal p-6 rounded-3xl border border-white/10 relative flex flex-col justify-between hover:border-brand-rose/50 transition-colors shadow-lg">
+                    <div>
+                        <div class="flex items-center text-brand-gold gap-1 mb-4 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-stone-400 ms-2 font-sans text-xs">5.0 / 5.0</span>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">
+                            "The asymmetrical high-low cape top in Emerald Green is stunning! The drape is modest, elegant, and comfortable. I received so many compliments."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                        <div class="w-10 h-10 rounded-full bg-brand-rose/30 flex items-center justify-center font-bold text-brand-gold text-sm">
+                            AW
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Aminat W.</h4>
+                            <p class="text-xs text-stone-400">Verified Buyer &bull; Nairobi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-brand-charcoal p-6 rounded-3xl border border-white/10 relative flex flex-col justify-between hover:border-brand-rose/50 transition-colors shadow-lg">
+                    <div>
+                        <div class="flex items-center text-brand-gold gap-1 mb-4 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-stone-400 ms-2 font-sans text-xs">5.0 / 5.0</span>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">
+                            "Visited their shop at RNG Plaza, 2nd Floor on Ronald Ngala Street. The staff helped me with my size. Size 14 fit like it was tailored specifically for me."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                        <div class="w-10 h-10 rounded-full bg-brand-gold/30 flex items-center justify-center font-bold text-brand-gold text-sm">
+                            CM
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Christine M.</h4>
+                            <p class="text-xs text-stone-400">In-Store Shopper &bull; Mombasa Delivery</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-brand-charcoal p-6 rounded-3xl border border-white/10 relative flex flex-col justify-between hover:border-brand-rose/50 transition-colors shadow-lg">
+                    <div>
+                        <div class="flex items-center text-brand-gold gap-1 mb-4 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-stone-400 ms-2 font-sans text-xs">5.0 / 5.0</span>
+                        </div>
+                        <p class="text-stone-300 text-sm italic mb-6">
+                            "Ordered via WhatsApp and received my two-piece set in Nakuru the next morning via Fargo courier. High quality fabric and rich color finish."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                        <div class="w-10 h-10 rounded-full bg-emerald-800/40 flex items-center justify-center font-bold text-emerald-400 text-sm">
+                            FK
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Fatima K.</h4>
+                            <p class="text-xs text-stone-400">WhatsApp Order &bull; Nakuru</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="store-locator" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Store Location Info -->
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-rose/20 text-brand-rose text-xs font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-store"></i> Flagship Store Location
+                </div>
+                <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
+                    Visit Our Nairobi Shop
+                </h2>
+                <p class="text-stone-300 text-sm sm:text-base leading-relaxed">
+                    Step into our physical boutique to try on our ready-to-wear collections, inspect fabric quality, and consult on custom sizing.
+                </p>
+
+                <div class="space-y-4 pt-2">
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-900 border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold shrink-0 mt-1">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Boutique Address</h4>
+                            <p class="text-stone-300 text-xs sm:text-sm">RNG Plaza, 2nd Floor Shop, Ronald Ngala Street</p>
+                            <p class="text-stone-400 text-xs">Nairobi CBD, Kenya</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-900 border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mt-1">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Phone & WhatsApp Hotline</h4>
+                            <p class="text-stone-300 text-xs sm:text-sm">+254 715 981 916 / 0715981916</p>
+                            <p class="text-stone-400 text-xs">Direct support for inquiries, deliveries, and M-Pesa orders</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-900 border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-brand-rose/20 flex items-center justify-center text-brand-rose shrink-0 mt-1">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold text-sm">Operating Hours</h4>
+                            <p class="text-stone-300 text-xs sm:text-sm">Monday &ndash; Saturday: 8:30 AM &ndash; 7:00 PM</p>
+                            <p class="text-stone-400 text-xs">Sunday: Open for scheduled appointments</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="https://wa.me/254715981916?text=Hello%20Prints%20of%20Africa,%20I%20would%20like%20to%20inquire%20about%20your%20outfits" target="_blank" class="px-6 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-lg">
+                        <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp Us Now
+                    </a>
+                    <a href="tel:0715981916" class="px-6 py-3.5 rounded-full bg-stone-800 border border-white/20 text-stone-200 hover:text-white hover:bg-stone-700 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-phone text-xs"></i> Call 0715981916
+                    </a>
+                </div>
+            </div>
+
+            <!-- Map Graphic Card -->
+            <div class="bg-stone-900 border border-white/10 p-6 rounded-3xl relative shadow-2xl">
+                <div class="aspect-square sm:aspect-[4/3] rounded-2xl bg-stone-800 overflow-hidden relative border border-white/10 flex flex-col items-center justify-center text-center p-6">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#C58B70_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    
+                    <div class="relative z-10 space-y-4">
+                        <div class="w-16 h-16 rounded-full bg-brand-rose/20 border-2 border-brand-gold flex items-center justify-center mx-auto animate-bounce">
+                            <i class="fa-solid fa-location-dot text-2xl text-brand-gold"></i>
+                        </div>
+                        <div>
+                            <span class="bg-black/60 px-3 py-1 rounded-full text-[11px] font-mono text-brand-gold border border-brand-gold/30">Nairobi CBD</span>
+                            <h3 class="font-serif text-2xl font-bold text-white mt-2">RNG Plaza &bull; 2nd Floor</h3>
+                            <p class="text-stone-300 text-xs mt-1">Ronald Ngala Street, Nairobi</p>
+                        </div>
+                        <p class="text-xs text-stone-400 max-w-xs mx-auto">
+                            Conveniently located in Nairobi CBD with parking access.
+                        </p>
+                        <a href="https://maps.google.com/?q=RNG+Plaza+Nairobi" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-gold text-black font-bold text-xs uppercase tracking-wider hover:bg-white transition-all">
+                            <i class="fa-solid fa-map-location-dot"></i> Open Directions in Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-black text-stone-400 pt-16 pb-12 border-t border-white/10 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+            
+            <div class="space-y-4 md:col-span-1">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full border border-brand-rose flex items-center justify-center bg-black">
+                        <span class="font-serif font-bold text-sm text-brand-gold">PA</span>
+                    </div>
+                    <span class="font-serif text-lg font-bold text-white tracking-widest uppercase">Prints of Africa</span>
+                </div>
+                <p class="text-stone-400 leading-relaxed">
+                    Ready to wear outfits made for the modest and elegant woman. Designed with timeless African heritage in Nairobi, Kenya.
+                </p>
+                <div class="flex space-x-3 pt-2">
+                    <a href="https://instagram.com/prints_of_africa" target="_blank" class="w-8 h-8 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-stone-300 hover:text-brand-rose hover:border-brand-rose transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-stone-300 hover:text-brand-rose hover:border-brand-rose transition-colors">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://wa.me/254715981916" target="_blank" class="w-8 h-8 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-stone-300 hover:text-brand-rose hover:border-brand-rose transition-colors">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    <button onclick="openAdminPanel()" title="Administrator portal" class="w-8 h-8 rounded-full bg-stone-900 border border-brand-gold/40 flex items-center justify-center text-brand-gold hover:text-white hover:border-brand-gold transition-colors">
+                        <i class="fa-solid fa-lock text-[11px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-4 text-xs border-l-2 border-brand-rose pl-2">Quick Navigation</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="#home" class="hover:text-white transition-colors">Home Page</a></li>
+                    <li><a href="#collections" class="hover:text-white transition-colors">Catalog Collections</a></li>
+                    <li><button onclick="toggleSizeGuideModal(true)" class="hover:text-white transition-colors text-left">Interactive Size Calculator</button></li>
+                    <li><a href="#reviews" class="hover:text-white transition-colors">Verified Feedback</a></li>
+                    <li><a href="#store-locator" class="hover:text-white transition-colors">Nairobi Store Location</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-wider mb-4 text-xs border-l-2 border-brand-gold pl-2">Categories</h4>
+                <ul class="space-y-2.5">
+                    <li><a href="#collections" onclick="filterCategory('kaftans')" class="hover:text-white transition-colors">Flowing Kaftans & Abayas</a></li>
+                    <li><a href="#collections" onclick="filterCategory('tops')" class="hover:text-white transition-colors">Asymmetric High-Low Tops</a></li>
+                    <li><a href="#collections" onclick="filterCategory('coords')" class="hover:text-white transition-colors">Matching Co-ord Sets</a></li>
+                    <li><a href="#collections" onclick="filterCategory('prints')" class="hover:text-white transition-colors">African Print Statements</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="text-white font-bold uppercase tracking-wider mb-4 text-xs border-l-2 border-brand-rose pl-2">Visit Boutique</h4>
+                <p class="text-stone-300">RNG Plaza, 2nd Floor Shop</p>
+                <p class="text-stone-400">Ronald Ngala Street, Nairobi</p>
+                <p class="text-stone-300 font-mono pt-1"><i class="fa-solid fa-phone me-1 text-brand-gold"></i> 0715981916</p>
+                <div class="pt-2">
+                    <span class="bg-stone-900 px-3 py-1.5 rounded-lg border border-white/10 text-[10px] text-brand-gold block font-mono">
+                        M-PESA Payment / Delivery Available
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-500 gap-4">
+            <p>&copy; 2026 Prints of Africa (PA). All rights reserved.</p>
+            <p>Ronald Ngala Street, RNG Plaza 2nd Floor, Nairobi, Kenya.</p>
+        </div>
+    </footer>
+
+    <div id="size-guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-brand-charcoal border border-white/20 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            
+            <button onclick="toggleSizeGuideModal(false)" class="absolute top-5 right-5 text-stone-400 hover:text-white w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <span class="text-brand-gold text-xs font-bold uppercase tracking-widest">Find Your Ideal Fit</span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mt-1">Prints of Africa Size Chart</h3>
+                <p class="text-stone-400 text-xs mt-1">Standard UK / Kenyan sizing covering Sizes 6 to 24.</p>
+            </div>
+
+            <!-- Modal Tab Controls -->
+            <div class="flex border-b border-white/10 mb-6 text-xs sm:text-sm font-semibold">
+                <button id="tab-calculator-btn" onclick="switchSizeTab('calculator')" class="py-3 px-6 text-brand-gold border-b-2 border-brand-gold">
+                    <i class="fa-solid fa-calculator me-2"></i> Fit Calculator
+                </button>
+                <button id="tab-chart-btn" onclick="switchSizeTab('chart')" class="py-3 px-6 text-stone-400 hover:text-white">
+                    <i class="fa-solid fa-table me-2"></i> Full Size Chart
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Fit Estimator -->
+            <div id="size-tab-calculator" class="space-y-6">
+                <div class="bg-black/40 p-5 rounded-2xl border border-white/5 space-y-4">
+                    <p class="text-xs text-stone-300">Enter your key body measurements in inches to calculate your size:</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Bust (inches)</label>
+                            <input type="number" id="calc-bust" placeholder="e.g. 38" class="w-full bg-stone-900 border border-white/20 rounded-xl px-4 py-2 text-white text-sm focus:border-brand-gold outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Waist (inches)</label>
+                            <input type="number" id="calc-waist" placeholder="e.g. 30" class="w-full bg-stone-900 border border-white/20 rounded-xl px-4 py-2 text-white text-sm focus:border-brand-gold outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-stone-300 mb-1">Hip (inches)</label>
+                            <input type="number" id="calc-hip" placeholder="e.g. 40" class="w-full bg-stone-900 border border-white/20 rounded-xl px-4 py-2 text-white text-sm focus:border-brand-gold outline-none">
+                        </div>
+                    </div>
+
+                    <button onclick="calculateSizeFit()" class="w-full py-3 bg-gradient-to-r from-brand-rose to-brand-rosegold text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:opacity-90 transition-opacity">
+                        Calculate Recommended Size
+                    </button>
+                </div>
+
+                <!-- Fit Result Output Box -->
+                <div id="size-result-box" class="hidden bg-stone-900/90 border border-brand-gold/40 p-5 rounded-2xl text-center space-y-2">
+                    <span class="text-xs text-stone-400 uppercase font-semibold">Recommended Match</span>
+                    <div class="text-2xl sm:text-3xl font-bold font-serif text-brand-gold" id="recommended-size-text">UK Size 12</div>
+                    <p class="text-xs text-stone-300" id="recommended-size-desc">Based on your measurements, UK Size 12 provides an elegant, relaxed modest drape.</p>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Size Chart Table -->
+            <div id="size-tab-chart" class="hidden overflow-x-auto">
+                <table class="w-full text-left text-xs text-stone-300 border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/20 text-brand-gold font-serif text-sm">
+                            <th class="py-3 px-3">Size (UK)</th>
+                            <th class="py-3 px-3">Bust (in)</th>
+                            <th class="py-3 px-3">Waist (in)</th>
+                            <th class="py-3 px-3">Hip (in)</th>
+                            <th class="py-3 px-3">Sleeve Round (in)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/10 font-mono">
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 6</td><td class="px-3">34</td><td class="px-3">26</td><td class="px-3">36</td><td class="px-3">9</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 8</td><td class="px-3">36</td><td class="px-3">28</td><td class="px-3">38</td><td class="px-3">10</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 10</td><td class="px-3">38</td><td class="px-3">30</td><td class="px-3">40</td><td class="px-3">12</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 12</td><td class="px-3">40</td><td class="px-3">32</td><td class="px-3">42</td><td class="px-3">14</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 14</td><td class="px-3">42</td><td class="px-3">34</td><td class="px-3">44</td><td class="px-3">14 ½</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 16</td><td class="px-3">44</td><td class="px-3">36</td><td class="px-3">46</td><td class="px-3">15</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 18</td><td class="px-3">46</td><td class="px-3">38</td><td class="px-3">48</td><td class="px-3">16</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 20</td><td class="px-3">48</td><td class="px-3">40</td><td class="px-3">50</td><td class="px-3">17</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 22</td><td class="px-3">50</td><td class="px-3">42</td><td class="px-3">52</td><td class="px-3">18</td></tr>
+                        <tr><td class="py-2.5 px-3 font-bold text-white">Size 24</td><td class="px-3">52</td><td class="px-3">44</td><td class="px-3">54</td><td class="px-3">19</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs text-stone-400">
+                <span>📍 Custom adjustments available at RNG Plaza Store.</span>
+                <button onclick="toggleSizeGuideModal(false)" class="text-brand-rose hover:underline font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quick-view-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-brand-charcoal border border-white/20 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto p-6 relative shadow-2xl">
+            <button onclick="closeQuickView()" class="absolute top-5 right-5 text-stone-400 hover:text-white w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="quick-view-content" class="grid md:grid-cols-2 gap-8">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-brand-charcoal z-50 border-l border-white/10 translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+        
+        <!-- Cart Drawer Header -->
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bag-shopping text-brand-gold text-xl"></i>
+                <h3 class="font-serif text-2xl font-bold text-white">Your Shopping Bag</h3>
+            </div>
+            <button onclick="toggleCartDrawer(false)" class="text-stone-400 hover:text-white w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List Container -->
+        <div id="cart-items-container" class="p-6 overflow-y-auto flex-1 space-y-4">
+            <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Cart Footer / WhatsApp Order Action -->
+        <div class="p-6 border-t border-white/10 bg-black/40 space-y-4">
+            <div class="space-y-2 text-xs">
+                <div class="flex justify-between text-stone-400">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal" class="font-mono text-white text-sm font-bold">KSh 0</span>
+                </div>
+                <div class="flex justify-between text-stone-400">
+                    <span>Delivery (Kenya)</span>
+                    <span class="text-emerald-400 font-semibold">Arranged via Order</span>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="triggerCheckout()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold text-xs uppercase tracking-widest hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-lg">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Order Directly via WhatsApp
+                </button>
+                <p class="text-[10px] text-center text-stone-400 mt-2">
+                    📲 Fast direct order processing to +254 715 981 916 with M-Pesa option
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="search-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col items-center justify-start pt-24 px-4">
+        <button onclick="toggleSearchModal(false)" class="absolute top-8 right-8 text-stone-400 hover:text-white text-2xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="w-full max-w-2xl space-y-6">
+            <div class="relative">
+                <input type="text" id="search-input" onkeyup="handleSearchInput()" placeholder="Search kaftans, asymmetric tops, co-ords..." class="w-full bg-stone-900 border-2 border-brand-gold rounded-2xl px-6 py-4 text-white text-lg placeholder-stone-500 focus:outline-none shadow-2xl">
+                <i class="fa-solid fa-magnifying-glass absolute right-6 top-1/2 -translate-y-1/2 text-brand-gold text-xl"></i>
+            </div>
+            <div id="search-results-container" class="max-h-[60vh] overflow-y-auto space-y-3">
+                <!-- Search results -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notification" class="fixed bottom-6 right-6 z-50 bg-brand-rose text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 translate-y-24 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toast-message" class="text-xs font-semibold">Item added to bag!</span>
+    </div>
+
+    <div id="admin-modal" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md hidden overflow-y-auto p-4 sm:p-8">
+        <div class="max-w-7xl mx-auto bg-brand-charcoal border border-white/15 rounded-3xl shadow-2xl min-h-[calc(100vh-4rem)] overflow-hidden">
+            <div class="p-5 sm:p-7 border-b border-white/10 flex flex-wrap gap-4 items-center justify-between">
+                <div>
+                    <p class="text-brand-gold text-[10px] font-bold uppercase tracking-[0.25em]">Prints of Africa</p>
+                    <h2 class="font-serif text-3xl font-bold text-white">Administrator Workspace</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="admin-session-label" class="text-xs text-emerald-400"></span>
+                    <button onclick="closeAdminPanel()" class="w-9 h-9 rounded-full bg-stone-800 text-stone-300 hover:text-white flex items-center justify-center" title="Close administrator workspace"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div id="admin-login" class="p-8 sm:p-16 max-w-md mx-auto">
+                <div class="text-center mb-8"><i class="fa-solid fa-shield-halved text-4xl text-brand-gold mb-4"></i><h3 class="font-serif text-2xl text-white font-bold">Secure sign in</h3><p class="text-xs text-stone-400 mt-2">Local administrator access for this browser.</p></div>
+                <form onsubmit="adminLogin(event)" class="space-y-4">
+                    <input id="admin-username" required value="admin" placeholder="Username" class="w-full bg-stone-900 border border-white/15 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-brand-gold">
+                    <input id="admin-password" required type="password" placeholder="Password" class="w-full bg-stone-900 border border-white/15 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-brand-gold">
+                    <p id="admin-login-error" class="hidden text-xs text-red-400"></p>
+                    <button class="w-full py-3 rounded-xl bg-brand-gold text-black font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors">Sign in</button>
+                    <p class="text-[10px] text-center text-stone-500">Demo credentials: admin / PA2026!</p>
+                </form>
+            </div>
+            <div id="admin-dashboard" class="hidden p-5 sm:p-7">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-stone-900 border border-white/10 rounded-2xl p-4"><p class="text-[10px] uppercase tracking-wider text-stone-400">Products</p><p id="admin-product-count" class="text-2xl font-bold text-white mt-2">0</p></div>
+                    <div class="bg-stone-900 border border-white/10 rounded-2xl p-4"><p class="text-[10px] uppercase tracking-wider text-stone-400">Orders</p><p id="admin-order-count" class="text-2xl font-bold text-white mt-2">0</p></div>
+                    <div class="bg-stone-900 border border-white/10 rounded-2xl p-4"><p class="text-[10px] uppercase tracking-wider text-stone-400">Pending</p><p id="admin-pending-count" class="text-2xl font-bold text-brand-gold mt-2">0</p></div>
+                    <div class="bg-stone-900 border border-white/10 rounded-2xl p-4"><p class="text-[10px] uppercase tracking-wider text-stone-400">Revenue</p><p id="admin-revenue" class="text-2xl font-bold text-emerald-400 mt-2">KSh 0</p></div>
+                </div>
+                <div class="grid xl:grid-cols-[1.1fr_1.9fr] gap-6">
+                    <section class="bg-stone-900 border border-white/10 rounded-2xl p-5">
+                        <div class="flex items-center justify-between mb-4"><h3 class="font-serif text-xl font-bold text-white">Product editor</h3><button onclick="resetProductForm()" class="text-xs text-brand-gold hover:text-white">New product</button></div>
+                        <form onsubmit="saveAdminProduct(event)" class="space-y-3">
+                            <input type="hidden" id="admin-product-id">
+                            <input id="admin-product-name" required placeholder="Product name" class="admin-field">
+                            <div class="grid grid-cols-2 gap-3"><input id="admin-product-price" required type="number" min="0" placeholder="Price (KSh)" class="admin-field"><input id="admin-product-stock" required type="number" min="0" placeholder="Stock" class="admin-field"></div>
+                            <select id="admin-product-category" class="admin-field"><option value="tops">Tops & Tunics</option><option value="kaftans">Kaftans & Abayas</option><option value="coords">Co-ord Sets</option><option value="prints">African Print Statements</option></select>
+                            <input id="admin-product-color" required placeholder="Colour" class="admin-field">
+                            <div class="space-y-2">
+                                <div id="admin-product-gallery" class="flex flex-wrap gap-2"></div>
+                                <label class="admin-field cursor-pointer flex items-center justify-center gap-2 text-stone-400 hover:text-white text-xs">
+                                    <i class="fa-solid fa-upload"></i> Upload photos (multiple allowed)
+                                    <input type="file" id="admin-product-image-file" accept="image/jpeg,image/png,image/webp,image/gif" multiple onchange="handleAdminImageFiles(event)" class="hidden">
+                                </label>
+                                <div class="flex gap-2">
+                                    <input id="admin-product-image-url" placeholder="Or paste an image URL" class="admin-field flex-1">
+                                    <button type="button" onclick="addAdminImageUrl()" class="px-4 rounded-xl bg-stone-800 border border-white/10 text-xs text-white hover:border-brand-gold shrink-0">Add</button>
+                                </div>
+                                <input type="hidden" id="admin-product-image">
+                            </div>
+                            <textarea id="admin-product-description" required rows="3" placeholder="Description" class="admin-field"></textarea>
+                            <button class="w-full py-3 rounded-xl bg-brand-rose text-white font-bold text-xs uppercase tracking-widest">Save product</button>
+                        </form>
+                    </section>
+                    <section class="bg-stone-900 border border-white/10 rounded-2xl p-5 overflow-hidden"><div class="flex items-center justify-between mb-4"><h3 class="font-serif text-xl font-bold text-white">Catalog inventory</h3><span class="text-[10px] text-stone-500">Changes appear in the shop immediately</span></div><div id="admin-products-table" class="overflow-x-auto"></div></section>
+                </div>
+                <section class="bg-stone-900 border border-white/10 rounded-2xl p-5 mt-6"><div class="flex items-center justify-between mb-4"><h3 class="font-serif text-xl font-bold text-white">Orders</h3><span class="text-[10px] text-stone-500">Orders placed from this browser</span></div><div id="admin-orders-table" class="overflow-x-auto"></div></section>
+                <div class="mt-6 flex justify-end"><button onclick="adminLogout()" class="text-xs text-stone-400 hover:text-white"><i class="fa-solid fa-right-from-bracket mr-1"></i> Sign out</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_PRODUCTS = [
+            {
+                id: 'pa-001',
+                name: 'Asymmetric High-Low Cape Top',
+                category: 'tops',
+                price: 4500,
+                color: 'Emerald Green',
+                swatches: ['#004D40', '#C85A32', '#4A154B', '#141414'],
+                sizes: [8, 10, 12, 14, 16, 18, 20, 22],
+                image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
+                description: 'Signature flowing silhouette with dramatic asymmetric drop drape. Designed for maximum elegance and modest flare.',
+                tag: 'Bestseller',
+                stock: 12
+            },
+            {
+                id: 'pa-002',
+                name: 'Royal Heritage Kaftan Maxi',
+                category: 'kaftans',
+                price: 6500,
+                color: 'Rich Terracotta',
+                swatches: ['#C85A32', '#004D40', '#D4AF37'],
+                sizes: [10, 12, 14, 16, 18, 20, 22, 24],
+                image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80',
+                description: 'Full-length luxury modest kaftan featuring soft metallic print trim and tailored wrist cuffs.',
+                tag: 'New Arrival',
+                stock: 9
+            },
+            {
+                id: 'pa-003',
+                name: 'Modest Two-Piece Co-ord Set',
+                category: 'coords',
+                price: 5800,
+                color: 'Mauve Pink & Black',
+                swatches: ['#C58B70', '#141414'],
+                sizes: [6, 8, 10, 12, 14, 16],
+                image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80',
+                description: 'Flowing asymmetrical layered top paired with structured tailored wide-leg trousers.',
+                tag: 'Trending',
+                stock: 7
+            },
+            {
+                id: 'pa-004',
+                name: 'African Print Statement Cape Dress',
+                category: 'prints',
+                price: 6200,
+                color: 'Golden Ochre Print',
+                swatches: ['#D4AF37', '#B87333'],
+                sizes: [8, 10, 12, 14, 16, 18, 20],
+                image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80',
+                description: 'Vibrant custom print design celebrating authentic African motifs with a structured modest fit.',
+                tag: 'Exclusive',
+                stock: 6
+            },
+            {
+                id: 'pa-005',
+                name: 'Royal Purple Draped Tunic',
+                category: 'tops',
+                price: 4200,
+                color: 'Deep Violet',
+                swatches: ['#4A154B', '#004D40', '#C58B70'],
+                sizes: [8, 10, 12, 14, 16, 18, 20, 22, 24],
+                image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80',
+                description: 'Effortless fluid tunic top with comfortable modest neckline and wide batwing drape.',
+                tag: 'Popular',
+                stock: 11
+            },
+            {
+                id: 'pa-006',
+                name: 'Elegance Satin Outerwear Abaya',
+                category: 'kaftans',
+                price: 6800,
+                color: 'Midnight Onyx',
+                swatches: ['#141414', '#D4AF37'],
+                sizes: [10, 12, 14, 16, 18, 20, 22],
+                image: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=800&q=80',
+                description: 'Open-front luxury satin outerwear layer with gold metallic brocade borders.',
+                tag: 'Luxury',
+                stock: 5
+            },
+            {
+                id: 'pa-007',
+                name: 'Monroe Set - Blush Abstract Print',
+                category: 'coords',
+                price: 5000,
+                color: 'Blush Beige & Rust Print',
+                swatches: ['#D8B4A0', '#8B4B3B', '#A45C40'],
+                sizes: [8, 10, 12, 14, 16, 18, 20, 22],
+                image: 'assets/products/monroe-set-blush.jpg',
+                description: 'Draped asymmetric abstract-print cape top with a cinched drawstring waist, paired with a flowing rust wide-leg palazzo trouser. Full Set.',
+                tag: 'New Arrival',
+                stock: 10
+            },
+            {
+                id: 'pa-008',
+                name: 'Bahamas Palazzo Set',
+                category: 'coords',
+                price: 5000,
+                color: 'Ruby Red & Print Kimono',
+                swatches: ['#C0272D', '#D4AF37'],
+                sizes: [8, 10, 12, 14, 16, 18, 20],
+                image: 'assets/products/bahamas-set.jpg',
+                description: 'Bold red wide-leg palazzo trousers styled with an open printed kimono cape overlay. Palazzo Set.',
+                tag: 'New Arrival',
+                stock: 8
+            },
+            {
+                id: 'pa-009',
+                name: 'Bahamas Short Set',
+                category: 'coords',
+                price: 3500,
+                color: 'Ruby Red & Print Kimono',
+                swatches: ['#C0272D', '#D4AF37'],
+                sizes: [8, 10, 12, 14, 16, 18, 20],
+                image: 'assets/products/bahamas-set-citrus.jpg',
+                description: 'Flowy printed cape top paired with chic tailored shorts. Perfect for slaying on vacation. Short Set.',
+                tag: 'New Arrival',
+                stock: 8
+            },
+            {
+                id: 'pa-010',
+                name: 'Monroe Set - Emerald Satin',
+                category: 'coords',
+                price: 5000,
+                color: 'Emerald Green',
+                swatches: ['#004D40', '#00695C'],
+                sizes: [8, 10, 12, 14, 16, 18, 20, 22],
+                image: 'assets/products/monroe-set-emerald.jpg',
+                description: 'Luxurious emerald satin draped top with a ruched drawstring waist, paired with matching wide-leg satin trousers. Full Set.',
+                tag: 'New Arrival',
+                stock: 10
+            },
+            {
+                id: 'pa-011',
+                name: 'Luxe Kaftan Gown',
+                category: 'kaftans',
+                price: 3500,
+                color: 'Ruby Red',
+                swatches: ['#C0272D', '#4A154B', '#556B2F', '#C85A32'],
+                sizes: ['Free Size'],
+                image: 'assets/products/luxe-khaftan-red.jpg',
+                description: 'Free-size luxe kaftan gown with inbelts that tie to size and snatch the waist. Matching braided head piece sold separately (KSh 1,000).',
+                tag: 'New Arrival',
+                stock: 6
+            },
+            {
+                id: 'pa-012',
+                name: 'Malkia Set - Monochrome Print',
+                category: 'coords',
+                price: 5000,
+                color: 'Black & White Print',
+                swatches: ['#141414', '#FFFFFF'],
+                sizes: [8, 10, 12, 14, 16, 18, 20],
+                image: 'assets/products/malkia-set-black.jpg',
+                description: 'Wrap-tie satin blouse with balloon sleeves in a graphic monochrome print, styled with tailored wide-leg black trousers.',
+                tag: 'New Arrival',
+                stock: 9
+            },
+            {
+                id: 'pa-013',
+                name: 'Malkia Set - Emerald Print',
+                category: 'coords',
+                price: 5000,
+                color: 'Emerald Green & White Print',
+                swatches: ['#004D40', '#FFFFFF'],
+                sizes: [8, 10, 12, 14, 16, 18, 20],
+                image: 'assets/products/malkia-set-green.jpg',
+                description: 'Wrap-tie satin blouse with balloon sleeves in an emerald abstract print, styled with tailored wide-leg emerald trousers.',
+                tag: 'New Arrival',
+                stock: 9
+            },
+            {
+                id: 'pa-014',
+                name: 'Ruby Long Top - Noir',
+                category: 'tops',
+                price: 3500,
+                color: 'Black',
+                swatches: ['#141414'],
+                sizes: ['Free Size'],
+                image: 'assets/products/ruby-long-top-black.jpg',
+                description: 'Dramatic high-low cape top with flowing batwing sleeves, worn over fitted leggings for a striking silhouette.',
+                tag: 'New Arrival',
+                stock: 12
+            },
+            {
+                id: 'pa-015',
+                name: 'Ruby Long Top - Amethyst',
+                category: 'tops',
+                price: 3500,
+                color: 'Purple',
+                swatches: ['#4A154B'],
+                sizes: ['Free Size'],
+                image: 'assets/products/ruby-long-top-purple.jpg',
+                description: 'Dramatic high-low cape top with flowing batwing sleeves in rich amethyst purple, worn over fitted leggings.',
+                tag: 'New Arrival',
+                stock: 12
+            },
+            {
+                id: 'pa-016',
+                name: 'Ruby Long Top - Emerald Teal',
+                category: 'tops',
+                price: 3500,
+                color: 'Teal',
+                swatches: ['#00695C'],
+                sizes: ['Free Size'],
+                image: 'assets/products/ruby-long-top-teal.jpg',
+                description: 'Dramatic high-low cape top with flowing batwing sleeves in emerald teal, worn over fitted leggings.',
+                tag: 'New Arrival',
+                stock: 12
+            },
+            {
+                id: 'pa-017',
+                name: 'Ruby Long Top - Chocolate Brown',
+                category: 'tops',
+                price: 3500,
+                color: 'Chocolate Brown',
+                swatches: ['#5C3A21'],
+                sizes: ['Free Size'],
+                image: 'assets/products/ruby-long-top-brown.jpg',
+                description: 'Dramatic high-low cape top with flowing batwing sleeves in rich chocolate brown, worn over fitted leggings.',
+                tag: 'New Arrival',
+                stock: 12
+            },
+            {
+                id: 'pa-018',
+                name: 'Monroe Set - Noir',
+                category: 'coords',
+                price: 5000,
+                color: 'Classic Black',
+                swatches: ['#141414'],
+                sizes: ['S', 'M', 'L', 'XL', '2XL'],
+                image: 'assets/products/monroe-set-black.jpg',
+                description: 'Chic and bold flowy top with waist-cinching in-belts, paired with palazzo pants with functional pockets. Now available in classic, timeless black. Full Set.',
+                tag: 'New Arrival',
+                stock: 10
+            },
+            {
+                id: 'pa-019',
+                name: 'Luxe Kaftan Gown - Olive Green',
+                category: 'kaftans',
+                price: 3500,
+                color: 'Olive Green',
+                swatches: ['#556B2F', '#D4AF37'],
+                sizes: ['Free Size'],
+                image: 'assets/products/luxe-khaftan-olive.jpg',
+                description: 'Free-size luxe kaftan gown in olive green with an ornate gold waist belt and inbelts that tie to size. Matching braided head piece sold separately (KSh 1,000).',
+                tag: 'New Arrival',
+                stock: 6
+            },
+            {
+                id: 'pa-020',
+                name: 'Luxe Kaftan Gown - Black Satin',
+                category: 'kaftans',
+                price: 3500,
+                color: 'Black Satin',
+                swatches: ['#141414', '#D4AF37'],
+                sizes: ['Free Size'],
+                image: 'assets/products/luxe-khaftan-black-satin.jpg',
+                description: 'Free-size luxe kaftan gown in liquid black satin with an ornate gold waist belt and inbelts that tie to size.',
+                tag: 'New Arrival',
+                stock: 6
+            }
+        ];
+
+        const STORAGE_KEYS = { products: 'pa_products', orders: 'pa_orders', cart: 'pa_cart', wishlist: 'pa_wishlist' };
+        function readStore(key, fallback) {
+            try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (error) { return fallback; }
+        }
+        function writeStore(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+        let PRODUCTS = readStore(STORAGE_KEYS.products, DEFAULT_PRODUCTS);
+        let orders = readStore(STORAGE_KEYS.orders, []);
+
+        // Backend API (Node/Express + Neon Postgres, see /server). Falls back to
+        // localStorage automatically if the API is unreachable (e.g. offline demo).
+        const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'
+            : '';
+        let apiAvailable = false;
+
+        async function apiFetch(path, options = {}) {
+            const response = await fetch(`${API_BASE_URL}${path}`, {
+                headers: { 'Content-Type': 'application/json' },
+                ...options
+            });
+            if (!response.ok) throw new Error(`API ${path} failed: ${response.status}`);
+            return response.status === 204 ? null : response.json();
+        }
+
+        async function loadFromApi() {
+            try {
+                const [apiProducts, apiOrders] = await Promise.all([
+                    apiFetch('/api/products'),
+                    apiFetch('/api/orders')
+                ]);
+                PRODUCTS = apiProducts.length ? apiProducts : PRODUCTS;
+                orders = apiOrders;
+                writeStore(STORAGE_KEYS.products, PRODUCTS);
+                writeStore(STORAGE_KEYS.orders, orders);
+                apiAvailable = true;
+            } catch (error) {
+                console.warn('Neon API unavailable, using local storage cache instead.', error);
+                apiAvailable = false;
+            }
+        }
+        let cart = readStore(STORAGE_KEYS.cart, []);
+        let wishlist = readStore(STORAGE_KEYS.wishlist, []);
+        let currentCategory = 'all';
+
+        function renderProducts(category = 'all') {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+
+            const filtered = category === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === category);
+
+            filtered.forEach(product => {
+                const isWishlisted = wishlist.includes(product.id);
+                const card = document.createElement('div');
+                card.className = 'bg-stone-900/90 rounded-3xl border border-white/10 overflow-hidden group hover:border-brand-rose/60 transition-all duration-300 flex flex-col justify-between shadow-xl';
+                card.innerHTML = `
+                    <div class="relative aspect-[3/4] overflow-hidden bg-stone-800">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <span class="absolute top-4 left-4 bg-brand-rose text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
+                            ${product.tag}
+                        </span>
+
+                        <button onclick="toggleWishlist('${product.id}')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 border border-white/20 flex items-center justify-center text-white hover:text-brand-rose transition-colors">
+                            <i class="${isWishlisted ? 'fa-solid text-brand-rose' : 'fa-regular'} fa-heart"></i>
+                        </button>
+
+                        <div class="absolute bottom-4 left-4 right-4 flex gap-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                            <button onclick="openQuickView('${product.id}')" class="flex-1 py-2.5 bg-black/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-brand-rose transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start gap-2">
+                                <h3 class="font-serif text-lg font-bold text-white group-hover:text-brand-gold transition-colors">${product.name}</h3>
+                                <span class="text-brand-gold font-mono font-bold text-sm whitespace-nowrap">KSh ${product.price.toLocaleString()}</span>
+                            </div>
+                            <p class="text-xs text-stone-400 mt-1 line-clamp-2">${product.description}</p>
+                        </div>
+
+                        <div class="space-y-3 pt-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-1.5">
+                                    ${product.swatches.map(hex => `<span class="w-3 h-3 rounded-full border border-white/30" style="background-color: ${hex}"></span>`).join('')}
+                                </div>
+                                <span class="text-[11px] text-stone-400">UK Sizes 6&ndash;24</span>
+                            </div>
+
+                            <button onclick="addToCart('${product.id}')" class="w-full py-3 rounded-xl bg-stone-800 border border-brand-rose/40 hover:bg-brand-rose text-stone-200 hover:text-white font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus text-xs"></i> Add To Bag
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat, btnElement) {
+            currentCategory = cat;
+            if (btnElement) {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('bg-brand-rose', 'text-white');
+                    b.classList.add('bg-stone-900', 'text-stone-300', 'border', 'border-white/10');
+                });
+                btnElement.classList.remove('bg-stone-900', 'text-stone-300', 'border', 'border-white/10');
+                btnElement.classList.add('bg-brand-rose', 'text-white');
+            }
+            renderProducts(cat);
+        }
+
+        function addToCart(productId, selectedSize = 12) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+            const currentQuantity = cart.filter(item => item.id === productId).reduce((sum, item) => sum + item.quantity, 0);
+            if (Number.isFinite(product.stock) && currentQuantity >= product.stock) {
+                showToast('This product is currently out of stock');
+                return;
+            }
+
+            const existingIndex = cart.findIndex(item => item.id === productId && item.size === selectedSize);
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    size: selectedSize,
+                    color: product.color,
+                    quantity: 1
+                });
+            }
+
+            writeStore(STORAGE_KEYS.cart, cart);
+            updateCartUI();
+            showToast(`Added "${product.name}" to your bag`);
+            toggleCartDrawer(true);
+        }
+
+        function updateCartQuantity(index, delta) {
+            if (cart[index]) {
+                cart[index].quantity += delta;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            writeStore(STORAGE_KEYS.cart, cart);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            writeStore(STORAGE_KEYS.cart, cart);
+
+            document.getElementById('cart-count').innerText = totalCount;
+            document.getElementById('cart-subtotal').innerText = `KSh ${subtotal.toLocaleString()}`;
+
+            const container = document.getElementById('cart-items-container');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 space-y-3 text-stone-400">
+                        <i class="fa-solid fa-bag-shopping text-4xl text-stone-600"></i>
+                        <p class="text-sm">Your shopping bag is empty.</p>
+                        <button onclick="toggleCartDrawer(false)" class="text-brand-gold text-xs font-bold uppercase underline">Explore Ready-to-Wear</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map((item, index) => `
+                    <div class="flex gap-4 p-3 bg-stone-900 border border-white/10 rounded-2xl items-center">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-20 object-cover rounded-xl">
+                        <div class="flex-1 space-y-1">
+                            <h4 class="text-xs font-bold text-white line-clamp-1">${item.name}</h4>
+                            <p class="text-[11px] text-stone-400">Size: <strong class="text-white">UK ${item.size}</strong> | ${item.color}</p>
+                            <p class="text-xs font-mono font-bold text-brand-gold">KSh ${(item.price * item.quantity).toLocaleString()}</p>
+                            <div class="flex items-center gap-2 pt-1">
+                                <button onclick="updateCartQuantity(${index}, -1)" class="w-5 h-5 rounded bg-stone-800 text-stone-300 flex items-center justify-center text-xs">-</button>
+                                <span class="text-xs font-mono px-1 text-white">${item.quantity}</span>
+                                <button onclick="updateCartQuantity(${index}, 1)" class="w-5 h-5 rounded bg-stone-800 text-stone-300 flex items-center justify-center text-xs">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            if (open) {
+                overlay.classList.remove('hidden');
+                drawer.classList.remove('translate-x-full');
+            } else {
+                overlay.classList.add('hidden');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        function toggleSizeGuideModal(open) {
+            const modal = document.getElementById('size-guide-modal');
+            modal.classList.toggle('hidden', !open);
+        }
+
+        function switchSizeTab(tabName) {
+            const calcTab = document.getElementById('size-tab-calculator');
+            const chartTab = document.getElementById('size-tab-chart');
+            const calcBtn = document.getElementById('tab-calculator-btn');
+            const chartBtn = document.getElementById('tab-chart-btn');
+
+            if (tabName === 'calculator') {
+                calcTab.classList.remove('hidden');
+                chartTab.classList.add('hidden');
+                calcBtn.className = 'py-3 px-6 text-brand-gold border-b-2 border-brand-gold';
+                chartBtn.className = 'py-3 px-6 text-stone-400 hover:text-white';
+            } else {
+                calcTab.classList.add('hidden');
+                chartTab.classList.remove('hidden');
+                chartBtn.className = 'py-3 px-6 text-brand-gold border-b-2 border-brand-gold';
+                calcBtn.className = 'py-3 px-6 text-stone-400 hover:text-white';
+            }
+        }
+
+        function calculateSizeFit() {
+            const bust = parseFloat(document.getElementById('calc-bust').value);
+            const waist = parseFloat(document.getElementById('calc-waist').value);
+            const hip = parseFloat(document.getElementById('calc-hip').value);
+
+            if (!bust && !waist && !hip) {
+                alert('Please enter at least one measurement in inches.');
+                return;
+            }
+
+            let calculatedSize = 12;
+            const refBust = bust || (waist ? waist + 8 : 40);
+
+            if (refBust <= 34) calculatedSize = 6;
+            else if (refBust <= 36) calculatedSize = 8;
+            else if (refBust <= 38) calculatedSize = 10;
+            else if (refBust <= 40) calculatedSize = 12;
+            else if (refBust <= 42) calculatedSize = 14;
+            else if (refBust <= 44) calculatedSize = 16;
+            else if (refBust <= 46) calculatedSize = 18;
+            else if (refBust <= 48) calculatedSize = 20;
+            else if (refBust <= 50) calculatedSize = 22;
+            else calculatedSize = 24;
+
+            const resultBox = document.getElementById('size-result-box');
+            document.getElementById('recommended-size-text').innerText = `UK Size ${calculatedSize}`;
+            document.getElementById('recommended-size-desc').innerText = `Recommended fit based on your measurements. Tailored to flow gracefully.`;
+            resultBox.classList.remove('hidden');
+        }
+
+        function toggleWishlist(productId) {
+            const idx = wishlist.indexOf(productId);
+            if (idx > -1) {
+                wishlist.splice(idx, 1);
+                showToast('Removed from wishlist');
+            } else {
+                wishlist.push(productId);
+                showToast('Saved to your wishlist');
+            }
+            writeStore(STORAGE_KEYS.wishlist, wishlist);
+            document.getElementById('wishlist-count').innerText = wishlist.length;
+            renderProducts(currentCategory);
+        }
+
+        function openWishlistModal() {
+            if (wishlist.length === 0) {
+                showToast('Your wishlist is currently empty');
+            } else {
+                showToast(`You have ${wishlist.length} saved item(s)`);
+            }
+        }
+
+        function openQuickView(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const images = (product.images && product.images.length) ? product.images : [product.image];
+            const content = document.getElementById('quick-view-content');
+            content.innerHTML = `
+                <div class="space-y-3">
+                    <div class="aspect-[3/4] bg-stone-800 rounded-2xl overflow-hidden">
+                        <img id="quick-view-main-image" src="${images[0]}" alt="${product.name}" class="w-full h-full object-cover">
+                    </div>
+                    ${images.length > 1 ? `
+                        <div class="flex gap-2 overflow-x-auto">
+                            ${images.map((img, index) => `
+                                <button onclick="document.getElementById('quick-view-main-image').src='${img}'" class="w-14 h-14 rounded-lg overflow-hidden border ${index === 0 ? 'border-brand-gold' : 'border-white/10'} shrink-0">
+                                    <img src="${img}" class="w-full h-full object-cover">
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="space-y-5 flex flex-col justify-between">
+                    <div>
+                        <span class="text-brand-rose text-xs font-bold uppercase tracking-widest">${product.tag}</span>
+                        <h3 class="font-serif text-3xl font-bold text-white mt-1">${product.name}</h3>
+                        <p class="text-2xl font-mono text-brand-gold font-bold mt-2">KSh ${product.price.toLocaleString()}</p>
+                        <p class="text-stone-300 text-xs sm:text-sm leading-relaxed mt-4">${product.description}</p>
+                        
+                        <div class="mt-6 space-y-3">
+                            <label class="block text-xs font-bold text-stone-200 uppercase tracking-wider">Select UK Size:</label>
+                            <div class="flex flex-wrap gap-2" id="quick-size-pills">
+                                ${product.sizes.map(s => `
+                                    <button onclick="selectQuickSize(this, ${s})" class="quick-size-pill w-10 h-10 rounded-xl bg-stone-900 border border-white/20 text-xs text-white font-bold hover:border-brand-gold transition-all">
+                                        ${s}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-white/10">
+                        <button id="quick-add-btn" onclick="addToCart('${product.id}', selectedQuickSize); closeQuickView();" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-rose to-brand-rosegold text-white font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all">
+                            Add Size UK 12 To Bag
+                        </button>
+                        <button onclick="toggleSizeGuideModal(true)" class="w-full py-2 text-stone-400 hover:text-brand-gold text-xs flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-ruler-horizontal"></i> Check Size Guide
+                        </button>
+                    </div>
+                </div>
+            `;
+            window.selectedQuickSize = 12;
+            document.getElementById('quick-view-modal').classList.remove('hidden');
+        }
+
+        function selectQuickSize(btn, size) {
+            document.querySelectorAll('.quick-size-pill').forEach(b => b.classList.remove('border-brand-gold', 'bg-brand-rose'));
+            btn.classList.add('border-brand-gold', 'bg-brand-rose');
+            window.selectedQuickSize = size;
+            document.getElementById('quick-add-btn').innerText = `Add Size UK ${size} To Bag`;
+        }
+
+        function closeQuickView() {
+            document.getElementById('quick-view-modal').classList.add('hidden');
+        }
+
+        function toggleSearchModal(open) {
+            const modal = document.getElementById('search-modal');
+            modal.classList.toggle('hidden', !open);
+            if (open) document.getElementById('search-input').focus();
+        }
+
+        function handleSearchInput() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('search-results-container');
+            
+            if (!query) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const results = PRODUCTS.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query));
+            container.innerHTML = results.map(p => `
+                <div onclick="openQuickView('${p.id}'); toggleSearchModal(false);" class="p-3 bg-stone-900 border border-white/10 rounded-2xl flex items-center gap-4 cursor-pointer hover:border-brand-gold transition-colors">
+                    <img src="${p.image}" class="w-12 h-16 object-cover rounded-xl">
+                    <div>
+                        <h4 class="text-white font-bold text-sm">${p.name}</h4>
+                        <p class="text-xs text-brand-gold font-mono">KSh ${p.price.toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function triggerCheckout() {
+            if (cart.length === 0) {
+                alert('Your shopping bag is empty.');
+                return;
+            }
+            const customerName = prompt('Customer name:');
+            if (!customerName) return;
+            const customerPhone = prompt('Phone number:');
+            if (!customerPhone) return;
+            const deliveryLocation = prompt('Delivery location or pickup preference:');
+            if (!deliveryLocation) return;
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemsList = cart.map(i => `${i.name} (UK ${i.size}) x${i.quantity}`).join('%0A');
+            const order = {
+                id: `PA-${Date.now().toString().slice(-8)}`,
+                customerName,
+                customerPhone,
+                deliveryLocation,
+                items: cart.map(item => ({ ...item })),
+                total: subtotal,
+                status: 'Pending',
+                createdAt: new Date().toISOString()
+            };
+            orders.unshift(order);
+            writeStore(STORAGE_KEYS.orders, orders);
+            if (apiAvailable) {
+                apiFetch('/api/orders', { method: 'POST', body: JSON.stringify(order) })
+                    .catch(error => console.warn('Failed to sync order to Neon', error));
+            }
+            const waUrl = `https://wa.me/254715981916?text=Hello%20Prints%20of%20Africa!%20I%20would%20like%20to%20place%20an%20order:%0A%0A${itemsList}%0A%0ATotal:%20KSh%20${subtotal.toLocaleString()}%0A%0APlease%20provide%20M-Pesa%20payment%20and%20delivery%20details.`;
+            cart = [];
+            updateCartUI();
+            toggleCartDrawer(false);
+            showToast(`Order ${order.id} saved successfully`);
+            window.open(waUrl, '_blank');
+        }
+
+        async function openAdminPanel() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            const authenticated = sessionStorage.getItem('pa_admin_session') === 'active';
+            document.getElementById('admin-login').classList.toggle('hidden', authenticated);
+            document.getElementById('admin-dashboard').classList.toggle('hidden', !authenticated);
+            if (authenticated) {
+                await loadFromApi();
+                renderAdminDashboard();
+            }
+        }
+
+        function closeAdminPanel() { document.getElementById('admin-modal').classList.add('hidden'); }
+
+        function adminLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-username').value.trim();
+            const password = document.getElementById('admin-password').value;
+            if (username === 'admin' && password === 'PA2026!') {
+                sessionStorage.setItem('pa_admin_session', 'active');
+                document.getElementById('admin-login-error').classList.add('hidden');
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-session-label').innerText = 'Signed in as admin';
+                loadFromApi().then(renderAdminDashboard);
+            } else {
+                const error = document.getElementById('admin-login-error');
+                error.innerText = 'Invalid administrator credentials.';
+                error.classList.remove('hidden');
+            }
+        }
+
+        function adminLogout() {
+            sessionStorage.removeItem('pa_admin_session');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-login').classList.remove('hidden');
+        }
+
+        function renderAdminDashboard() {
+            const pending = orders.filter(order => order.status === 'Pending').length;
+            const revenue = orders.filter(order => order.status !== 'Cancelled').reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('admin-product-count').innerText = PRODUCTS.length;
+            document.getElementById('admin-order-count').innerText = orders.length;
+            document.getElementById('admin-pending-count').innerText = pending;
+            document.getElementById('admin-revenue').innerText = `KSh ${revenue.toLocaleString()}`;
+            document.getElementById('admin-products-table').innerHTML = PRODUCTS.length ? `<table class="w-full text-left text-xs"><thead class="text-stone-500 border-b border-white/10"><tr><th class="py-2 pr-4">Product</th><th class="py-2 pr-4">Price</th><th class="py-2 pr-4">Stock</th><th class="py-2">Actions</th></tr></thead><tbody class="divide-y divide-white/5">${PRODUCTS.map(product => `<tr><td class="py-3 pr-4 text-white min-w-40">${product.name}</td><td class="py-3 pr-4 text-brand-gold">KSh ${product.price.toLocaleString()}</td><td class="py-3 pr-4 ${product.stock < 3 ? 'text-red-400' : 'text-emerald-400'}">${product.stock}</td><td class="py-3 whitespace-nowrap"><button onclick="editAdminProduct('${product.id}')" class="text-brand-gold mr-3">Edit</button><button onclick="deleteAdminProduct('${product.id}')" class="text-red-400">Delete</button></td></tr>`).join('')}</tbody></table>` : '<p class="text-xs text-stone-500 py-4">No products yet.</p>';
+            document.getElementById('admin-orders-table').innerHTML = orders.length ? `<table class="w-full text-left text-xs"><thead class="text-stone-500 border-b border-white/10"><tr><th class="py-2 pr-4">Order</th><th class="py-2 pr-4">Customer</th><th class="py-2 pr-4">Total</th><th class="py-2 pr-4">Placed</th><th class="py-2">Status</th></tr></thead><tbody class="divide-y divide-white/5">${orders.map(order => `<tr><td class="py-3 pr-4 text-brand-gold font-mono">${order.id}</td><td class="py-3 pr-4 text-white">${order.customerName}<span class="block text-stone-500">${order.customerPhone}</span></td><td class="py-3 pr-4 text-white">KSh ${order.total.toLocaleString()}</td><td class="py-3 pr-4 text-stone-400">${new Date(order.createdAt).toLocaleDateString()}</td><td class="py-3"><select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-stone-800 border border-white/10 rounded-lg px-2 py-1 text-xs text-white"><option ${order.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option><option ${order.status === 'Ready' ? 'selected' : ''}>Ready</option><option ${order.status === 'Completed' ? 'selected' : ''}>Completed</option><option ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option></select></td></tr>`).join('')}</tbody></table>` : '<p class="text-xs text-stone-500 py-4">No orders yet. Orders placed through checkout appear here.</p>';
+        }
+
+        function resetProductForm() {
+            document.querySelector('#admin-dashboard form').reset();
+            document.getElementById('admin-product-id').value = '';
+            adminProductImages = [];
+            renderAdminImageGallery();
+        }
+
+        let adminProductImages = [];
+
+        function renderAdminImageGallery() {
+            document.getElementById('admin-product-image').value = adminProductImages[0] || '';
+            document.getElementById('admin-product-gallery').innerHTML = adminProductImages.map((url, index) => `
+                <div class="relative w-16 h-16">
+                    <img src="${url}" class="w-full h-full object-cover rounded-xl border ${index === 0 ? 'border-brand-gold' : 'border-white/10'}">
+                    ${index === 0 ? '<span class="absolute -top-1.5 -left-1.5 bg-brand-gold text-black text-[9px] font-bold px-1.5 py-0.5 rounded-full">Cover</span>' : ''}
+                    <button type="button" onclick="removeAdminImage(${index})" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-black/80 text-white text-[10px] flex items-center justify-center hover:bg-red-500">&times;</button>
+                </div>
+            `).join('');
+        }
+
+        function removeAdminImage(index) {
+            adminProductImages.splice(index, 1);
+            renderAdminImageGallery();
+        }
+
+        function addAdminImageUrl() {
+            const input = document.getElementById('admin-product-image-url');
+            const url = input.value.trim();
+            if (!url) return;
+            adminProductImages.push(url);
+            input.value = '';
+            renderAdminImageGallery();
+        }
+
+        async function handleAdminImageFiles(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+
+            if (!apiAvailable) {
+                showToast('Backend offline: images stored locally in this browser only');
+                const dataUrls = await Promise.all(files.map(file => new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                })));
+                adminProductImages.push(...dataUrls);
+                renderAdminImageGallery();
+                event.target.value = '';
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                files.forEach(file => formData.append('images', file));
+                const response = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: formData });
+                if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
+                const { urls } = await response.json();
+                adminProductImages.push(...urls.map(url => `${API_BASE_URL}${url}`));
+                renderAdminImageGallery();
+                showToast(`${urls.length} image(s) uploaded`);
+            } catch (error) {
+                console.warn('Image upload failed', error);
+                showToast('Image upload failed, please try again');
+            }
+            event.target.value = '';
+        }
+
+        function saveAdminProduct(event) {
+            event.preventDefault();
+            if (!adminProductImages.length) {
+                showToast('Please add at least one product photo');
+                return;
+            }
+            const id = document.getElementById('admin-product-id').value || `pa-${Date.now()}`;
+            const existing = PRODUCTS.find(product => product.id === id);
+            const images = adminProductImages.slice();
+            const product = { id, name: document.getElementById('admin-product-name').value.trim(), price: Number(document.getElementById('admin-product-price').value), stock: Number(document.getElementById('admin-product-stock').value), category: document.getElementById('admin-product-category').value, color: document.getElementById('admin-product-color').value.trim(), image: images[0], images, description: document.getElementById('admin-product-description').value.trim(), tag: existing?.tag || 'New Arrival', swatches: existing?.swatches || ['#C58B70'], sizes: existing?.sizes || [6, 8, 10, 12, 14, 16, 18, 20, 22, 24] };
+            if (existing) PRODUCTS = PRODUCTS.map(item => item.id === id ? product : item); else PRODUCTS.unshift(product);
+            writeStore(STORAGE_KEYS.products, PRODUCTS);
+            if (apiAvailable) {
+                apiFetch('/api/products', { method: 'POST', body: JSON.stringify(product) })
+                    .catch(error => console.warn('Failed to sync product to Neon', error));
+            }
+            resetProductForm();
+            renderProducts(currentCategory);
+            renderAdminDashboard();
+            showToast('Product saved');
+        }
+
+        function editAdminProduct(id) {
+            const product = PRODUCTS.find(item => item.id === id);
+            if (!product) return;
+            document.getElementById('admin-product-id').value = product.id;
+            document.getElementById('admin-product-name').value = product.name;
+            document.getElementById('admin-product-price').value = product.price;
+            document.getElementById('admin-product-stock').value = product.stock;
+            document.getElementById('admin-product-category').value = product.category;
+            document.getElementById('admin-product-color').value = product.color;
+            document.getElementById('admin-product-image-file').value = '';
+            adminProductImages = product.images && product.images.length ? [...product.images] : (product.image ? [product.image] : []);
+            renderAdminImageGallery();
+            document.getElementById('admin-product-description').value = product.description;
+            document.getElementById('admin-product-name').focus();
+        }
+
+        function deleteAdminProduct(id) {
+            if (!confirm('Remove this product from the storefront?')) return;
+            PRODUCTS = PRODUCTS.filter(product => product.id !== id);
+            writeStore(STORAGE_KEYS.products, PRODUCTS);
+            if (apiAvailable) {
+                apiFetch(`/api/products/${id}`, { method: 'DELETE' })
+                    .catch(error => console.warn('Failed to delete product on Neon', error));
+            }
+            renderProducts(currentCategory);
+            renderAdminDashboard();
+            showToast('Product removed');
+        }
+
+        function updateOrderStatus(id, status) {
+            orders = orders.map(order => order.id === id ? { ...order, status } : order);
+            writeStore(STORAGE_KEYS.orders, orders);
+            if (apiAvailable) {
+                apiFetch(`/api/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) })
+                    .catch(error => console.warn('Failed to update order status on Neon', error));
+            }
+            renderAdminDashboard();
+            showToast(`Order ${id} marked ${status}`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        const ORIGINAL_HERO_IMAGE = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1800&q=80';
+        let heroRotationTimer = null;
+
+        // Mixes the original hero shot with the actual African-print catalog photos, skipping local data-URL previews.
+        function buildHeroBackgroundImages() {
+            const productImages = PRODUCTS.map(product => product.image).filter(url => url && !url.startsWith('data:'));
+            return [...new Set([ORIGINAL_HERO_IMAGE, ...productImages])];
+        }
+
+        function startHeroBackgroundRotation() {
+            const container = document.getElementById('hero-bg-layers');
+            const images = buildHeroBackgroundImages();
+            container.innerHTML = images.map(url => `<div class="hero-bg-layer" style="background-image: url('${url}')"></div>`).join('');
+            const layers = container.querySelectorAll('.hero-bg-layer');
+            if (!layers.length) return;
+            let activeIndex = 0;
+            layers[0].classList.add('active');
+            if (heroRotationTimer) clearInterval(heroRotationTimer);
+            heroRotationTimer = setInterval(() => {
+                layers[activeIndex].classList.remove('active');
+                activeIndex = (activeIndex + 1) % layers.length;
+                layers[activeIndex].classList.add('active');
+            }, 6000);
+        }
+
+        window.onload = async function() {
+            await loadFromApi();
+            startHeroBackgroundRotation();
+            renderProducts();
+            updateCartUI();
+            document.getElementById('wishlist-count').innerText = wishlist.length;
+        };
+    </script>
+</body>
+</html>

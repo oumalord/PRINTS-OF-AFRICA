@@ -1,0 +1,17 @@
+Save each product photo into this folder using the exact filename below.
+The site (index.html) and server/seed.js already reference these paths.
+
+monroe-set-blush.jpg
+bahamas-set.jpg
+bahamas-set-citrus.jpg
+monroe-set-emerald.jpg
+luxe-khaftan-red.jpg
+malkia-set-black.jpg
+malkia-set-green.jpg
+ruby-long-top-black.jpg
+ruby-long-top-purple.jpg
+ruby-long-top-teal.jpg
+ruby-long-top-brown.jpg
+monroe-set-black.jpg
+luxe-khaftan-olive.jpg
+luxe-khaftan-black-satin.jpg
