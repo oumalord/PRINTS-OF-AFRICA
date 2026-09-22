@@ -100,6 +100,7 @@ function authenticatedAdmin(req, res, next) {
 app.post('/api/admin/login', async (req, res) => {
     const { username, password } = req.body || {};
     if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
+    if (!process.env.DATABASE_URL) return res.status(503).json({ error: 'DATABASE_URL is not configured on this deployment' });
     try {
         const { rows } = await pool.query(
             'SELECT id, username, role FROM admin_accounts WHERE username = $1 AND password_hash = crypt($2, password_hash)',
@@ -109,6 +110,9 @@ app.post('/api/admin/login', async (req, res) => {
         res.json({ token: signAdminSession(rows[0]), username: rows[0].username, role: rows[0].role });
     } catch (error) {
         console.error(error);
+        if (error.code === '42P01' || error.code === '42883') {
+            return res.status(503).json({ error: 'Run server/schema.sql in the Neon database connected to Vercel' });
+        }
         res.status(500).json({ error: 'Administrator sign in failed' });
     }
 });

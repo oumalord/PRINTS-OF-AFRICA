@@ -30,7 +30,9 @@ async function seed() {
     await pool.query(
         `INSERT INTO admin_accounts (username, password_hash, role)
          VALUES ('admin', crypt($1, gen_salt('bf')), 'owner')
-         ON CONFLICT (username) DO NOTHING`,
+         ON CONFLICT (username) DO UPDATE SET
+            password_hash = crypt($1, gen_salt('bf')),
+            role = 'owner'`,
         [process.env.ADMIN_INITIAL_PASSWORD || 'PA2026!']
     );
 
