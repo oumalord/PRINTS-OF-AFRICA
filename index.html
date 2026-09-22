@@ -1561,6 +1561,15 @@
 
         let adminProductImages = [];
 
+        function appendAdminImages(images) {
+            const validImages = images.filter(Boolean);
+            if (!validImages.length) return;
+            adminProductImages = adminProductImages.length
+                ? [...adminProductImages, ...validImages]
+                : [...validImages];
+            renderAdminImageGallery();
+        }
+
         function renderAdminImageGallery() {
             document.getElementById('admin-product-image').value = adminProductImages[0] || '';
             document.getElementById('admin-product-gallery').innerHTML = adminProductImages.map((url, index) => `
@@ -1581,9 +1590,8 @@
             const input = document.getElementById('admin-product-image-url');
             const url = input.value.trim();
             if (!url) return;
-            adminProductImages.push(url);
+            appendAdminImages([url]);
             input.value = '';
-            renderAdminImageGallery();
         }
 
         async function handleAdminImageFiles(event) {
@@ -1598,8 +1606,7 @@
                     reader.onerror = reject;
                     reader.readAsDataURL(file);
                 })));
-                adminProductImages.push(...dataUrls);
-                renderAdminImageGallery();
+                appendAdminImages(dataUrls);
                 event.target.value = '';
                 return;
             }
@@ -1610,8 +1617,7 @@
                 const response = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: formData });
                 if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
                 const { urls } = await response.json();
-                adminProductImages.push(...urls.map(url => `${API_BASE_URL}${url}`));
-                renderAdminImageGallery();
+                appendAdminImages(urls.map(url => `${API_BASE_URL}${url}`));
                 showToast(`${urls.length} image(s) uploaded`);
             } catch (error) {
                 console.warn('Image upload failed', error);
