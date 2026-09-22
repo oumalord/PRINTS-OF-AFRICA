@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Collections | Prints of Africa</title>
+<script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{colors:{brand:{dark:'#141414',rose:'#C58B70',gold:'#D4AF37'}},fontFamily:{serif:['Cormorant Garamond','serif'],sans:['Plus Jakarta Sans','sans-serif']}}}}</script>
+</head><body class="bg-brand-dark text-stone-200 font-sans"><header class="sticky top-0 z-10 bg-[#141414]/95 backdrop-blur border-b border-white/10"><nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"><a href="index.html" class="font-serif text-2xl font-bold tracking-widest text-white">PRINTS OF AFRICA</a><div class="flex gap-4 text-xs uppercase tracking-wider"><a href="index.html">Home</a><a class="text-brand-gold" href="collections.html">Collections</a><a href="reviews.html">Reviews</a><a href="store.html">Store</a><a href="contact.html">Contact</a></div></nav></header><main class="max-w-7xl mx-auto px-4 py-12"><div class="mb-10"><p class="text-brand-rose text-xs uppercase tracking-[.25em]">Ready to wear</p><h1 class="font-serif text-5xl text-white">The PA Heritage Collection</h1><p class="text-stone-400 mt-3">Shop modest, elegant pieces made in Nairobi.</p></div><div id="collections-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div></main><script>
+const api=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'http://localhost:3000':'';
+const fallback=[{name:'Loading collection',price:0,image:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',color:'Heritage'}];
+function render(products){document.getElementById('collections-grid').innerHTML=products.map(p=>`<article class="bg-stone-900 border border-white/10 rounded-xl overflow-hidden"><img src="${p.image}" alt="${p.name}" class="w-full aspect-[3/4] object-cover"><div class="p-3"><h2 class="font-serif text-xl text-white">${p.name}</h2><p class="text-brand-gold font-bold mt-1">KSh ${Number(p.price).toLocaleString()}</p><p class="text-xs text-stone-400 mt-1">${p.color}</p></div></article>`).join('')}
+fetch(`${api}/api/products`).then(r=>r.ok?r.json():Promise.reject()).then(render).catch(()=>render(fallback));
+</script></body></html>
