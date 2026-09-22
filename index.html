@@ -1194,6 +1194,9 @@
                         </div>
                     </div>
                 `;
+                card.addEventListener('click', event => {
+                    if (!event.target.closest('button, a')) openQuickView(product.id);
+                });
                 grid.appendChild(card);
             });
         }
