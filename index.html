@@ -178,11 +178,18 @@
             #toast-notification { left: 1rem; right: 1rem; bottom: 1rem; justify-content: center; text-align: center; }
 
             #admin-modal { padding: .5rem; }
+            #admin-modal { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+            #admin-modal > div {
+                max-height: none;
+                min-height: auto;
+                overflow: visible;
+            }
             #admin-modal h2 { font-size: 1.7rem; line-height: 1.1; }
             #admin-modal .grid.grid-cols-2 { gap: .5rem; }
             #admin-modal .p-5, #admin-modal .p-7 { padding: 1rem; }
-            #admin-dashboard { overflow-x: hidden; }
+            #admin-dashboard { overflow: visible; }
             #admin-products-table, #admin-orders-table { margin-inline: -.25rem; }
+            #admin-products-table, #admin-orders-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         }
 
         @media (min-width: 1024px) {
