@@ -515,27 +515,19 @@
                 </div>
             </div>
 
-            <!-- Map Graphic Card -->
-            <div class="bg-stone-900 border border-white/10 p-6 rounded-3xl relative shadow-2xl">
-                <div class="aspect-square sm:aspect-[4/3] rounded-2xl bg-stone-800 overflow-hidden relative border border-white/10 flex flex-col items-center justify-center text-center p-6">
-                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#C58B70_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                    
-                    <div class="relative z-10 space-y-4">
-                        <div class="w-16 h-16 rounded-full bg-brand-rose/20 border-2 border-brand-gold flex items-center justify-center mx-auto animate-bounce">
-                            <i class="fa-solid fa-location-dot text-2xl text-brand-gold"></i>
-                        </div>
-                        <div>
-                            <span class="bg-black/60 px-3 py-1 rounded-full text-[11px] font-mono text-brand-gold border border-brand-gold/30">Nairobi CBD</span>
-                            <h3 class="font-serif text-2xl font-bold text-white mt-2">RNG Plaza &bull; 2nd Floor</h3>
-                            <p class="text-stone-300 text-xs mt-1">Ronald Ngala Street, Nairobi</p>
-                        </div>
-                        <p class="text-xs text-stone-400 max-w-xs mx-auto">
-                            Conveniently located in Nairobi CBD with parking access.
-                        </p>
-                        <a href="https://maps.google.com/?q=RNG+Plaza+Nairobi" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-gold text-black font-bold text-xs uppercase tracking-wider hover:bg-white transition-all">
-                            <i class="fa-solid fa-map-location-dot"></i> Open Directions in Google Maps
-                        </a>
+            <!-- Live map -->
+            <div class="bg-stone-900 border border-white/10 p-3 sm:p-6 rounded-3xl relative shadow-2xl">
+                <div class="aspect-square sm:aspect-[4/3] rounded-2xl overflow-hidden relative border border-white/10 bg-stone-800">
+                    <iframe title="RNG Plaza Nairobi map" src="https://www.google.com/maps?q=RNG+Plaza,+Ronald+Ngala+Street,+Nairobi&output=embed" class="absolute inset-0 w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4">
+                    <div>
+                        <h3 class="font-serif text-xl font-bold text-white">RNG Plaza &bull; 2nd Floor</h3>
+                        <p class="text-stone-400 text-xs">Ronald Ngala Street, Nairobi CBD</p>
                     </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=RNG+Plaza+Ronald+Ngala+Street+Nairobi" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-gold text-black font-bold text-xs uppercase tracking-wider hover:bg-white transition-all">
+                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                    </a>
                 </div>
             </div>
 
@@ -1517,8 +1509,8 @@
             document.getElementById('admin-login').classList.toggle('hidden', authenticated);
             document.getElementById('admin-dashboard').classList.toggle('hidden', !authenticated);
             if (authenticated) {
-                await loadFromApi();
                 renderAdminDashboard();
+                loadFromApi().then(renderAdminDashboard);
             }
         }
 
@@ -1534,6 +1526,7 @@
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
                 document.getElementById('admin-session-label').innerText = 'Signed in as admin';
+                renderAdminDashboard();
                 loadFromApi().then(renderAdminDashboard);
             } else {
                 const error = document.getElementById('admin-login-error');
@@ -1747,6 +1740,7 @@
 
         window.onload = async function() {
             await loadFromApi();
+            startHeroBackgroundRotation();
             renderProducts();
             updateCartUI();
             document.getElementById('wishlist-count').innerText = wishlist.length;
