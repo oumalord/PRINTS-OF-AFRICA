@@ -48,11 +48,11 @@
         .hero-bg-layer {
             position: absolute;
             inset: 0;
-            background-position: center center;
+            background-position: center 28%;
             background-size: cover;
             background-repeat: no-repeat;
             background-color: transparent;
-            box-shadow: inset 0 0 0 100vmax rgba(20, 20, 20, .18);
+            box-shadow: inset 0 0 0 100vmax rgba(20, 20, 20, .08);
             opacity: 0;
             transition: opacity 1.8s ease-in-out;
         }
@@ -183,6 +183,19 @@
             #admin-modal .p-5, #admin-modal .p-7 { padding: 1rem; }
             #admin-dashboard { overflow-x: hidden; }
             #admin-products-table, #admin-orders-table { margin-inline: -.25rem; }
+        }
+
+        @media (min-width: 1024px) {
+            #home {
+                min-height: calc(100vh - 9rem);
+            }
+            #hero-bg-layers {
+                inset: 0 -8vw;
+            }
+            .hero-bg-layer {
+                background-position: center 24%;
+                background-size: cover;
+            }
         }
 
         @media (min-width: 640px) and (max-width: 1023px) {
