@@ -1,6 +1,9 @@
 // One-off script to load the storefront's default catalog into Neon.
 // Usage: npm run seed
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 const pool = require('./db');
 
 const DEFAULT_PRODUCTS = [
@@ -26,14 +29,25 @@ const DEFAULT_PRODUCTS = [
     { id: 'pa-020', name: 'Luxe Kaftan Gown - Black Satin', category: 'kaftans', price: 3500, color: 'Black Satin', swatches: ['#141414', '#D4AF37'], sizes: ['Free Size'], image: 'assets/products/luxe-khaftan-black-satin.jpg', description: 'Free-size luxe kaftan gown in liquid black satin with an ornate gold waist belt and inbelts that tie to size.', tag: 'New Arrival', stock: 6 }
 ];
 
+function hashAdminPassword(password) {
+    const salt = crypto.randomBytes(16).toString('hex');
+    return `scrypt$${salt}$${crypto.scryptSync(password, salt, 64).toString('hex')}`;
+}
+
 async function seed() {
+    if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not set in server/.env');
+    console.log('Connecting to Neon...');
+    await pool.query('SELECT 1');
+    console.log('Connected. Applying database schema...');
+    await pool.query(fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8'));
+    console.log('Schema ready. Seeding owner account...');
     await pool.query(
         `INSERT INTO admin_accounts (username, password_hash, role)
-         VALUES ('admin', crypt($1, gen_salt('bf')), 'owner')
+         VALUES ('admin', $1, 'owner')
          ON CONFLICT (username) DO UPDATE SET
-            password_hash = crypt($1, gen_salt('bf')),
+            password_hash = EXCLUDED.password_hash,
             role = 'owner'`,
-        [process.env.ADMIN_INITIAL_PASSWORD || 'PA2026!']
+        [hashAdminPassword(process.env.ADMIN_INITIAL_PASSWORD || 'PA2026!')]
     );
 
     for (const p of DEFAULT_PRODUCTS) {
@@ -44,11 +58,16 @@ async function seed() {
             [p.id, p.name, p.category, p.price, p.color, JSON.stringify(p.swatches), JSON.stringify(p.sizes), p.image, JSON.stringify([p.image]), p.description, p.tag, p.stock]
         );
     }
-    console.log(`Seeded ${DEFAULT_PRODUCTS.length} products.`);
-    await pool.end();
+    console.log(`Seeded ${DEFAULT_PRODUCTS.length} products and reset the admin owner password.`);
 }
 
-seed().catch(err => {
-    console.error(err);
-    process.exit(1);
-});
+seed()
+    .then(async () => {
+        await pool.end();
+        process.exit(0);
+    })
+    .catch(async err => {
+        console.error(`Seed failed: ${err.message}`);
+        await pool.end();
+        process.exit(1);
+    });

@@ -81,6 +81,18 @@ function signAdminSession(account) {
     return `${payload}.${signature}`;
 }
 
+function hashAdminPassword(password, salt = crypto.randomBytes(16).toString('hex')) {
+    const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+    return `scrypt$${salt}$${hash}`;
+}
+
+function verifyAdminPassword(password, storedHash) {
+    const [, salt, expectedHash] = String(storedHash).split('$');
+    if (!salt || !expectedHash) return false;
+    const actualHash = crypto.scryptSync(password, salt, 64).toString('hex');
+    return actualHash.length === expectedHash.length && crypto.timingSafeEqual(Buffer.from(actualHash), Buffer.from(expectedHash));
+}
+
 function authenticatedAdmin(req, res, next) {
     const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
     const [payload, signature] = token.split('.');
@@ -102,11 +114,8 @@ app.post('/api/admin/login', async (req, res) => {
     if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
     if (!process.env.DATABASE_URL) return res.status(503).json({ error: 'DATABASE_URL is not configured on this deployment' });
     try {
-        const { rows } = await pool.query(
-            'SELECT id, username, role FROM admin_accounts WHERE username = $1 AND password_hash = crypt($2, password_hash)',
-            [username.trim(), password]
-        );
-        if (!rows.length) return res.status(401).json({ error: 'Invalid administrator credentials' });
+        const { rows } = await pool.query('SELECT id, username, role, password_hash FROM admin_accounts WHERE username = $1', [username.trim()]);
+        if (!rows.length || !verifyAdminPassword(password, rows[0].password_hash)) return res.status(401).json({ error: 'Invalid administrator credentials' });
         res.json({ token: signAdminSession(rows[0]), username: rows[0].username, role: rows[0].role });
     } catch (error) {
         console.error(error);
@@ -122,8 +131,8 @@ app.post('/api/admin/accounts', authenticatedAdmin, async (req, res) => {
     if (!username || !password || password.length < 8) return res.status(400).json({ error: 'Username and password (8+ characters) are required' });
     try {
         const { rows } = await pool.query(
-            `INSERT INTO admin_accounts (username, password_hash) VALUES ($1, crypt($2, gen_salt('bf'))) RETURNING id, username, role, created_at`,
-            [username.trim(), password]
+            `INSERT INTO admin_accounts (username, password_hash) VALUES ($1, $2) RETURNING id, username, role, created_at`,
+            [username.trim(), hashAdminPassword(password)]
         );
         res.status(201).json(rows[0]);
     } catch (error) {
