@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 const projectRoot = path.join(__dirname, '..');
-app.use('/assets', express.static(path.join(projectRoot, 'assets')));
+app.use(express.static(projectRoot));
 app.get('/', (req, res) => {
     res.sendFile(path.join(projectRoot, 'index.html'), error => {
         if (error && !res.headersSent) {
@@ -243,6 +243,11 @@ app.put('/api/orders/:id/status', async (req, res) => {
 });
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
+
+// Serve the single-page storefront for browser routes after API handlers.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(projectRoot, 'index.html'));
+});
 
 const PORT = process.env.PORT || 3000;
 
