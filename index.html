@@ -1121,18 +1121,20 @@
 
         async function loadFromApi() {
             try {
-                const [apiProducts, apiOrders] = await Promise.all([
-                    apiFetch('/api/products'),
-                    apiFetch('/api/orders')
-                ]);
+                const apiProducts = await apiFetch('/api/products');
                 PRODUCTS = apiProducts.length ? apiProducts : PRODUCTS;
-                orders = apiOrders;
                 writeStore(STORAGE_KEYS.products, PRODUCTS);
-                writeStore(STORAGE_KEYS.orders, orders);
                 apiAvailable = true;
             } catch (error) {
-                console.warn('Neon API unavailable, using local storage cache instead.', error);
+                console.warn('Neon products API unavailable, using local storage cache instead.', error);
                 apiAvailable = false;
+            }
+
+            try {
+                orders = await apiFetch('/api/orders');
+                writeStore(STORAGE_KEYS.orders, orders);
+            } catch (error) {
+                console.warn('Neon orders API unavailable, keeping local order cache.', error);
             }
         }
         let cart = readStore(STORAGE_KEYS.cart, []);
@@ -1640,11 +1642,12 @@
                 try {
                     const savedProduct = await apiFetch('/api/products', { method: 'POST', body: JSON.stringify(product) });
                     if (savedProduct) {
-                        PRODUCTS = existing
-                            ? PRODUCTS.map(item => item.id === id ? savedProduct : item)
-                            : [savedProduct, ...PRODUCTS];
+                        const savedProducts = await apiFetch('/api/products');
+                        PRODUCTS = savedProducts.length ? savedProducts : [savedProduct, ...PRODUCTS];
+                        showToast('Product saved and published to Collections');
                     } else {
                         PRODUCTS = PRODUCTS.filter(item => item.id !== id);
+                        showToast('Product removed from Collections');
                     }
                     writeStore(STORAGE_KEYS.products, PRODUCTS);
                 } catch (error) {
@@ -1659,7 +1662,7 @@
             resetProductForm();
             renderProducts(currentCategory);
             renderAdminDashboard();
-            showToast('Product saved');
+            if (!apiAvailable) showToast('Product saved on this device only');
         }
 
         function editAdminProduct(id) {
