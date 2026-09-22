@@ -1471,7 +1471,7 @@
             `).join('');
         }
 
-        function triggerCheckout() {
+        async function triggerCheckout() {
             if (cart.length === 0) {
                 alert('Your shopping bag is empty.');
                 return;
@@ -1483,7 +1483,10 @@
             const deliveryLocation = prompt('Delivery location or pickup preference:');
             if (!deliveryLocation) return;
             const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const itemsList = cart.map(i => `${i.name} (UK ${i.size}) x${i.quantity}`).join('%0A');
+            const itemsList = cart.map((item, index) => {
+                const lineTotal = item.price * item.quantity;
+                return `${index + 1}. ${item.name} | Size: UK ${item.size} | Qty: ${item.quantity} | KSh ${lineTotal.toLocaleString()}\n   Image: ${item.image}`;
+            }).join('\n');
             const order = {
                 id: `PA-${Date.now().toString().slice(-8)}`,
                 customerName,
@@ -1496,16 +1499,20 @@
             };
             orders.unshift(order);
             writeStore(STORAGE_KEYS.orders, orders);
+            const whatsappMessage = `Hello Prints of Africa! I would like to place an order.\n\nOrder: ${order.id}\nCustomer: ${customerName}\nPhone: ${customerPhone}\nDelivery: ${deliveryLocation}\n\nITEMS\n${itemsList}\n\nTOTAL: KSh ${subtotal.toLocaleString()}\n\nPlease provide M-Pesa payment and delivery details.`;
+            const waUrl = `https://wa.me/254715981916?text=${encodeURIComponent(whatsappMessage)}`;
             if (apiAvailable) {
-                apiFetch('/api/orders', { method: 'POST', body: JSON.stringify(order) })
-                    .catch(error => console.warn('Failed to sync order to Neon', error));
+                try {
+                    await apiFetch('/api/orders', { method: 'POST', body: JSON.stringify(order) });
+                } catch (error) {
+                    console.warn('Failed to sync order to Neon', error);
+                }
             }
-            const waUrl = `https://wa.me/254715981916?text=Hello%20Prints%20of%20Africa!%20I%20would%20like%20to%20place%20an%20order:%0A%0A${itemsList}%0A%0ATotal:%20KSh%20${subtotal.toLocaleString()}%0A%0APlease%20provide%20M-Pesa%20payment%20and%20delivery%20details.`;
             cart = [];
             updateCartUI();
             toggleCartDrawer(false);
             showToast(`Order ${order.id} saved successfully`);
-            window.open(waUrl, '_blank');
+            window.location.href = waUrl;
         }
 
         async function openAdminPanel() {
@@ -1554,7 +1561,7 @@
             document.getElementById('admin-pending-count').innerText = pending;
             document.getElementById('admin-revenue').innerText = `KSh ${revenue.toLocaleString()}`;
             document.getElementById('admin-products-table').innerHTML = PRODUCTS.length ? `<table class="w-full text-left text-xs"><thead class="text-stone-500 border-b border-white/10"><tr><th class="py-2 pr-4">Product</th><th class="py-2 pr-4">Price</th><th class="py-2 pr-4">Stock</th><th class="py-2">Actions</th></tr></thead><tbody class="divide-y divide-white/5">${PRODUCTS.map(product => `<tr><td class="py-3 pr-4 text-white min-w-40">${product.name}</td><td class="py-3 pr-4 text-brand-gold">KSh ${product.price.toLocaleString()}</td><td class="py-3 pr-4 ${product.stock < 3 ? 'text-red-400' : 'text-emerald-400'}">${product.stock}</td><td class="py-3 whitespace-nowrap"><button onclick="editAdminProduct('${product.id}')" class="text-brand-gold mr-3">Edit</button><button onclick="deleteAdminProduct('${product.id}')" class="text-red-400">Delete</button></td></tr>`).join('')}</tbody></table>` : '<p class="text-xs text-stone-500 py-4">No products yet.</p>';
-            document.getElementById('admin-orders-table').innerHTML = orders.length ? `<table class="w-full text-left text-xs"><thead class="text-stone-500 border-b border-white/10"><tr><th class="py-2 pr-4">Order</th><th class="py-2 pr-4">Customer</th><th class="py-2 pr-4">Total</th><th class="py-2 pr-4">Placed</th><th class="py-2">Status</th></tr></thead><tbody class="divide-y divide-white/5">${orders.map(order => `<tr><td class="py-3 pr-4 text-brand-gold font-mono">${order.id}</td><td class="py-3 pr-4 text-white">${order.customerName}<span class="block text-stone-500">${order.customerPhone}</span></td><td class="py-3 pr-4 text-white">KSh ${order.total.toLocaleString()}</td><td class="py-3 pr-4 text-stone-400">${new Date(order.createdAt).toLocaleDateString()}</td><td class="py-3"><select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-stone-800 border border-white/10 rounded-lg px-2 py-1 text-xs text-white"><option ${order.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option><option ${order.status === 'Ready' ? 'selected' : ''}>Ready</option><option ${order.status === 'Completed' ? 'selected' : ''}>Completed</option><option ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option></select></td></tr>`).join('')}</tbody></table>` : '<p class="text-xs text-stone-500 py-4">No orders yet. Orders placed through checkout appear here.</p>';
+            document.getElementById('admin-orders-table').innerHTML = orders.length ? `<table class="w-full text-left text-xs"><thead class="text-stone-500 border-b border-white/10"><tr><th class="py-2 pr-4">Order</th><th class="py-2 pr-4">Customer</th><th class="py-2 pr-4">Products</th><th class="py-2 pr-4">Total</th><th class="py-2 pr-4">Placed</th><th class="py-2">Status</th></tr></thead><tbody class="divide-y divide-white/5">${orders.map(order => `<tr><td class="py-3 pr-4 text-brand-gold font-mono">${order.id}</td><td class="py-3 pr-4 text-white">${order.customerName}<span class="block text-stone-500">${order.customerPhone}</span><span class="block text-stone-500">${order.deliveryLocation}</span></td><td class="py-3 pr-4 text-stone-300 min-w-56">${(order.items || []).map(item => `<div class="flex items-center gap-2 mb-2"><img src="${item.image}" alt="${item.name}" class="w-8 h-10 object-cover rounded"><span>${item.name}<small class="block text-stone-500">UK ${item.size} x${item.quantity} | KSh ${(item.price * item.quantity).toLocaleString()}</small></span></div>`).join('')}</td><td class="py-3 pr-4 text-white">KSh ${order.total.toLocaleString()}</td><td class="py-3 pr-4 text-stone-400">${new Date(order.createdAt).toLocaleDateString()}</td><td class="py-3"><select onchange="updateOrderStatus('${order.id}', this.value)" class="bg-stone-800 border border-white/10 rounded-lg px-2 py-1 text-xs text-white"><option ${order.status === 'Pending' ? 'selected' : ''}>Pending</option><option ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option><option ${order.status === 'Ready' ? 'selected' : ''}>Ready</option><option ${order.status === 'Completed' ? 'selected' : ''}>Completed</option><option ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option></select></td></tr>`).join('')}</tbody></table>` : '<p class="text-xs text-stone-500 py-4">No orders yet. Orders placed through checkout appear here.</p>';
         }
 
         function resetProductForm() {
