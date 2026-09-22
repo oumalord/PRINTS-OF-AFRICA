@@ -25,6 +25,16 @@ app.get('/', (req, res) => {
     });
 });
 
+const pageRoutes = {
+    '/collections': 'collections.html',
+    '/reviews': 'reviews.html',
+    '/store': 'store.html',
+    '/contact': 'contact.html'
+};
+Object.entries(pageRoutes).forEach(([route, file]) => {
+    app.get(route, (req, res) => res.sendFile(path.join(projectRoot, file)));
+});
+
 // --- Image uploads -------------------------------------------------------
 
 const ALLOWED_IMAGE_MIME_TYPES = {
