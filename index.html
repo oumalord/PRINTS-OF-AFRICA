@@ -553,8 +553,9 @@
             
             <div class="space-y-4 md:col-span-1">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full border border-brand-rose flex items-center justify-center bg-black">
-                        <span class="font-serif font-bold text-sm text-brand-gold">PA</span>
+                    <div class="w-9 h-9 rounded-full border border-brand-rose flex items-center justify-center bg-black overflow-hidden">
+                        <img data-brand-logo class="hidden w-full h-full object-contain" alt="Prints of Africa logo">
+                        <span class="brand-logo-fallback font-serif font-bold text-sm text-brand-gold">PA</span>
                     </div>
                     <span class="font-serif text-lg font-bold text-white tracking-widest uppercase">Prints of Africa</span>
                 </div>
@@ -1594,18 +1595,25 @@
 
         async function loadAdminSettings() {
             try {
-                const { url } = await apiFetch('/api/settings/logo');
+                const { url } = await loadPublicLogo();
                 document.getElementById('admin-logo-preview').src = url || DEFAULT_LOGO;
-                document.querySelectorAll('[data-brand-logo]').forEach(image => {
-                    image.classList.toggle('hidden', !url);
-                    image.src = url || '';
-                    image.nextElementSibling?.classList.toggle('hidden', Boolean(url));
-                });
                 const accounts = await apiFetch('/api/admin/accounts');
                 document.getElementById('admin-accounts-list').innerHTML = accounts.map(account => `<div class="flex justify-between border-b border-white/5 py-2"><span>${account.username}</span><span class="text-stone-600">${account.role}</span></div>`).join('');
             } catch (error) {
                 console.warn('Admin settings unavailable', error);
             }
+        }
+
+        async function loadPublicLogo() {
+            const response = await fetch(`${API_BASE_URL}/api/settings/logo`);
+            if (!response.ok) throw new Error(`Logo API failed: ${response.status}`);
+            const { url } = await response.json();
+            document.querySelectorAll('[data-brand-logo]').forEach(image => {
+                image.classList.toggle('hidden', !url);
+                image.src = url || '';
+                image.nextElementSibling?.classList.toggle('hidden', Boolean(url));
+            });
+            return { url };
         }
 
         async function handleAdminLogo(event) {
@@ -1843,6 +1851,7 @@
         }
 
         window.onload = async function() {
+            loadPublicLogo().catch(error => console.warn('Public logo unavailable', error));
             await loadFromApi();
             startHeroBackgroundRotation();
             renderProducts();
