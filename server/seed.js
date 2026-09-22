@@ -27,6 +27,13 @@ const DEFAULT_PRODUCTS = [
 ];
 
 async function seed() {
+    await pool.query(
+        `INSERT INTO admin_accounts (username, password_hash, role)
+         VALUES ('admin', crypt($1, gen_salt('bf')), 'owner')
+         ON CONFLICT (username) DO NOTHING`,
+        [process.env.ADMIN_INITIAL_PASSWORD || 'PA2026!']
+    );
+
     for (const p of DEFAULT_PRODUCTS) {
         await pool.query(
             `INSERT INTO products (id, name, category, price, color, swatches, sizes, image, images, description, tag, stock)

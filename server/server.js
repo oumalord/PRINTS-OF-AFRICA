@@ -3,9 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const crypto = require('crypto');
 const pool = require('./db');
 
 const app = express();
+const sessionSecret = process.env.ADMIN_SESSION_SECRET || 'prints-of-africa-change-this-secret';
 const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(o => o.trim()).filter(Boolean);
 
 app.use(express.json());
@@ -41,7 +43,7 @@ const upload = multer({
     }
 });
 
-app.post('/api/upload', (req, res) => {
+app.post('/api/upload', authenticatedAdmin, (req, res) => {
     upload.array('images', 8)(req, res, (err) => {
         if (err) return res.status(400).json({ error: err.message });
         if (!req.files || !req.files.length) return res.status(400).json({ error: 'No files uploaded' });
@@ -70,6 +72,96 @@ app.get('/api/uploads/:id', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to load image' });
+    }
+});
+
+function signAdminSession(account) {
+    const payload = Buffer.from(JSON.stringify({ id: account.id, username: account.username, role: account.role, exp: Date.now() + 8 * 60 * 60 * 1000 })).toString('base64url');
+    const signature = crypto.createHmac('sha256', sessionSecret).update(payload).digest('base64url');
+    return `${payload}.${signature}`;
+}
+
+function authenticatedAdmin(req, res, next) {
+    const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    const [payload, signature] = token.split('.');
+    if (!payload || !signature) return res.status(401).json({ error: 'Administrator sign in required' });
+    const expected = crypto.createHmac('sha256', sessionSecret).update(payload).digest('base64url');
+    if (signature.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) return res.status(401).json({ error: 'Invalid administrator session' });
+    try {
+        const session = JSON.parse(Buffer.from(payload, 'base64url').toString());
+        if (session.exp < Date.now()) return res.status(401).json({ error: 'Administrator session expired' });
+        req.admin = session;
+        next();
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid administrator session' });
+    }
+}
+
+app.post('/api/admin/login', async (req, res) => {
+    const { username, password } = req.body || {};
+    if (!username || !password) return res.status(400).json({ error: 'Username and password are required' });
+    try {
+        const { rows } = await pool.query(
+            'SELECT id, username, role FROM admin_accounts WHERE username = $1 AND password_hash = crypt($2, password_hash)',
+            [username.trim(), password]
+        );
+        if (!rows.length) return res.status(401).json({ error: 'Invalid administrator credentials' });
+        res.json({ token: signAdminSession(rows[0]), username: rows[0].username, role: rows[0].role });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Administrator sign in failed' });
+    }
+});
+
+app.post('/api/admin/accounts', authenticatedAdmin, async (req, res) => {
+    const { username, password } = req.body || {};
+    if (!username || !password || password.length < 8) return res.status(400).json({ error: 'Username and password (8+ characters) are required' });
+    try {
+        const { rows } = await pool.query(
+            `INSERT INTO admin_accounts (username, password_hash) VALUES ($1, crypt($2, gen_salt('bf'))) RETURNING id, username, role, created_at`,
+            [username.trim(), password]
+        );
+        res.status(201).json(rows[0]);
+    } catch (error) {
+        if (error.code === '23505') return res.status(409).json({ error: 'That username already exists' });
+        console.error(error);
+        res.status(500).json({ error: 'Failed to create administrator account' });
+    }
+});
+
+app.get('/api/admin/accounts', authenticatedAdmin, async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT id, username, role, created_at FROM admin_accounts ORDER BY created_at');
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to load administrator accounts' });
+    }
+});
+
+app.get('/api/settings/logo', async (req, res) => {
+    try {
+        const { rows } = await pool.query("SELECT setting_value FROM site_settings WHERE setting_key = 'logo_url'");
+        res.json({ url: rows[0]?.setting_value || null });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to load logo setting' });
+    }
+});
+
+app.post('/api/settings/logo', authenticatedAdmin, async (req, res) => {
+    const { url } = req.body || {};
+    if (!url) return res.status(400).json({ error: 'Logo URL is required' });
+    try {
+        await pool.query(
+            `INSERT INTO site_settings (setting_key, setting_value) VALUES ('logo_url', $1)
+             ON CONFLICT (setting_key) DO UPDATE SET setting_value = EXCLUDED.setting_value, updated_at = now()`,
+            [url]
+        );
+        res.json({ url });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to save logo setting' });
     }
 });
 

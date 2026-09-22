@@ -216,8 +216,9 @@
 
                 <!-- Brand Logo -->
                 <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-11 h-11 rounded-full border-2 border-brand-rose flex items-center justify-center bg-black/50 group-hover:border-brand-gold transition-colors shadow-lg">
-                        <span class="font-serif font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-rose to-brand-gold">PA</span>
+                    <div class="w-11 h-11 rounded-full border-2 border-brand-rose flex items-center justify-center bg-black/50 group-hover:border-brand-gold transition-colors shadow-lg overflow-hidden">
+                        <img data-brand-logo class="hidden w-full h-full object-contain" alt="Prints of Africa logo">
+                        <span class="brand-logo-fallback font-serif font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-brand-rose to-brand-gold">PA</span>
                     </div>
                     <div class="flex flex-col">
                         <span class="font-serif text-xl sm:text-2xl font-bold tracking-widest text-white uppercase group-hover:text-brand-rose transition-colors">Prints of Africa</span>
@@ -801,7 +802,7 @@
                     <input id="admin-password" required type="password" placeholder="Password" class="w-full bg-stone-900 border border-white/15 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-brand-gold">
                     <p id="admin-login-error" class="hidden text-xs text-red-400"></p>
                     <button class="w-full py-3 rounded-xl bg-brand-gold text-black font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors">Sign in</button>
-                    <p class="text-[10px] text-center text-stone-500">Demo credentials: admin / PA2026!</p>
+                    <p class="text-[10px] text-center text-stone-500">Use an administrator account created by the owner.</p>
                 </form>
             </div>
             <div id="admin-dashboard" class="hidden p-5 sm:p-7">
@@ -839,6 +840,25 @@
                     <section class="bg-stone-900 border border-white/10 rounded-2xl p-5 overflow-hidden"><div class="flex items-center justify-between mb-4"><h3 class="font-serif text-xl font-bold text-white">Catalog inventory</h3><span class="text-[10px] text-stone-500">Changes appear in the shop immediately</span></div><div id="admin-products-table" class="overflow-x-auto"></div></section>
                 </div>
                 <section class="bg-stone-900 border border-white/10 rounded-2xl p-5 mt-6"><div class="flex items-center justify-between mb-4"><h3 class="font-serif text-xl font-bold text-white">Orders</h3><span class="text-[10px] text-stone-500">Orders placed from this browser</span></div><div id="admin-orders-table" class="overflow-x-auto"></div></section>
+                <div class="grid lg:grid-cols-2 gap-6 mt-6">
+                    <section class="bg-stone-900 border border-white/10 rounded-2xl p-5">
+                        <h3 class="font-serif text-xl font-bold text-white">Brand logo</h3>
+                        <p class="text-xs text-stone-500 mt-1">Upload a logo stored in Neon and used across the storefront.</p>
+                        <div class="flex items-center gap-4 mt-4">
+                            <img id="admin-logo-preview" class="w-16 h-16 rounded-full object-contain bg-black border border-brand-gold/50" alt="Logo preview">
+                            <label class="admin-field cursor-pointer flex-1 text-center text-xs text-stone-300">Upload logo<input type="file" id="admin-logo-file" accept="image/jpeg,image/png,image/webp,image/gif" onchange="handleAdminLogo(event)" class="hidden"></label>
+                        </div>
+                    </section>
+                    <section class="bg-stone-900 border border-white/10 rounded-2xl p-5">
+                        <h3 class="font-serif text-xl font-bold text-white">Administrator accounts</h3>
+                        <form onsubmit="createAdminAccount(event)" class="flex flex-col sm:flex-row gap-2 mt-4">
+                            <input id="new-admin-username" required placeholder="Username" class="admin-field">
+                            <input id="new-admin-password" required minlength="8" type="password" placeholder="Password (8+ chars)" class="admin-field">
+                            <button class="px-4 rounded-xl bg-brand-gold text-black text-xs font-bold shrink-0">Create</button>
+                        </form>
+                        <div id="admin-accounts-list" class="text-xs text-stone-400 mt-4"></div>
+                    </section>
+                </div>
                 <div class="mt-6 flex justify-end"><button onclick="adminLogout()" class="text-xs text-stone-400 hover:text-white"><i class="fa-solid fa-right-from-bracket mr-1"></i> Sign out</button></div>
             </div>
         </div>
@@ -1109,6 +1129,8 @@
         ];
 
         const STORAGE_KEYS = { products: 'pa_products', orders: 'pa_orders', cart: 'pa_cart', wishlist: 'pa_wishlist' };
+        const ADMIN_TOKEN_KEY = 'pa_admin_token';
+        const DEFAULT_LOGO = 'https://dummyimage.com/160x160/141414/D4AF37.png&text=PA';
         function readStore(key, fallback) {
             try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (error) { return fallback; }
         }
@@ -1124,8 +1146,9 @@
         let apiAvailable = false;
 
         async function apiFetch(path, options = {}) {
+            const token = sessionStorage.getItem(ADMIN_TOKEN_KEY);
             const response = await fetch(`${API_BASE_URL}${path}`, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
                 ...options
             });
             if (!response.ok) throw new Error(`API ${path} failed: ${response.status}`);
@@ -1530,40 +1553,89 @@
 
         async function openAdminPanel() {
             document.getElementById('admin-modal').classList.remove('hidden');
-            const authenticated = sessionStorage.getItem('pa_admin_session') === 'active';
+            const authenticated = Boolean(sessionStorage.getItem(ADMIN_TOKEN_KEY));
             document.getElementById('admin-login').classList.toggle('hidden', authenticated);
             document.getElementById('admin-dashboard').classList.toggle('hidden', !authenticated);
             if (authenticated) {
                 renderAdminDashboard();
                 loadFromApi().then(renderAdminDashboard);
+                loadAdminSettings();
             }
         }
 
         function closeAdminPanel() { document.getElementById('admin-modal').classList.add('hidden'); }
 
-        function adminLogin(event) {
+        async function adminLogin(event) {
             event.preventDefault();
             const username = document.getElementById('admin-username').value.trim();
             const password = document.getElementById('admin-password').value;
-            if (username === 'admin' && password === 'PA2026!') {
-                sessionStorage.setItem('pa_admin_session', 'active');
+            try {
+                const result = await apiFetch('/api/admin/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+                sessionStorage.setItem(ADMIN_TOKEN_KEY, result.token);
                 document.getElementById('admin-login-error').classList.add('hidden');
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
-                document.getElementById('admin-session-label').innerText = 'Signed in as admin';
+                document.getElementById('admin-session-label').innerText = `Signed in as ${result.username}`;
                 renderAdminDashboard();
                 loadFromApi().then(renderAdminDashboard);
-            } else {
-                const error = document.getElementById('admin-login-error');
-                error.innerText = 'Invalid administrator credentials.';
-                error.classList.remove('hidden');
+                loadAdminSettings();
+            } catch (loginError) {
+                const errorBox = document.getElementById('admin-login-error');
+                errorBox.innerText = loginError.message || 'Invalid administrator credentials.';
+                errorBox.classList.remove('hidden');
             }
         }
 
         function adminLogout() {
-            sessionStorage.removeItem('pa_admin_session');
+            sessionStorage.removeItem(ADMIN_TOKEN_KEY);
             document.getElementById('admin-dashboard').classList.add('hidden');
             document.getElementById('admin-login').classList.remove('hidden');
+        }
+
+        async function loadAdminSettings() {
+            try {
+                const { url } = await apiFetch('/api/settings/logo');
+                document.getElementById('admin-logo-preview').src = url || DEFAULT_LOGO;
+                document.querySelectorAll('[data-brand-logo]').forEach(image => {
+                    image.classList.toggle('hidden', !url);
+                    image.src = url || '';
+                    image.nextElementSibling?.classList.toggle('hidden', Boolean(url));
+                });
+                const accounts = await apiFetch('/api/admin/accounts');
+                document.getElementById('admin-accounts-list').innerHTML = accounts.map(account => `<div class="flex justify-between border-b border-white/5 py-2"><span>${account.username}</span><span class="text-stone-600">${account.role}</span></div>`).join('');
+            } catch (error) {
+                console.warn('Admin settings unavailable', error);
+            }
+        }
+
+        async function handleAdminLogo(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            try {
+                const formData = new FormData();
+                formData.append('images', file);
+                const response = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { Authorization: `Bearer ${sessionStorage.getItem(ADMIN_TOKEN_KEY)}` }, body: formData });
+                if (!response.ok) throw new Error(`Logo upload failed: ${response.status}`);
+                const { urls } = await response.json();
+                await apiFetch('/api/settings/logo', { method: 'POST', body: JSON.stringify({ url: `${API_BASE_URL}${urls[0]}` }) });
+                document.getElementById('admin-logo-preview').src = `${API_BASE_URL}${urls[0]}`;
+                showToast('Logo saved');
+            } catch (error) {
+                showToast('Logo upload failed');
+            }
+            event.target.value = '';
+        }
+
+        async function createAdminAccount(event) {
+            event.preventDefault();
+            try {
+                await apiFetch('/api/admin/accounts', { method: 'POST', body: JSON.stringify({ username: document.getElementById('new-admin-username').value.trim(), password: document.getElementById('new-admin-password').value }) });
+                event.target.reset();
+                await loadAdminSettings();
+                showToast('Administrator account created');
+            } catch (error) {
+                showToast(error.message || 'Could not create account');
+            }
         }
 
         function renderAdminDashboard() {
@@ -1639,7 +1711,7 @@
             try {
                 const formData = new FormData();
                 files.forEach(file => formData.append('images', file));
-                const response = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: formData });
+                const response = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', headers: { Authorization: `Bearer ${sessionStorage.getItem(ADMIN_TOKEN_KEY)}` }, body: formData });
                 if (!response.ok) throw new Error(`Upload failed: ${response.status}`);
                 const { urls } = await response.json();
                 appendAdminImages(urls.map(url => `${API_BASE_URL}${url}`));
